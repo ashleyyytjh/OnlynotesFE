@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import BannerIcon from '../assets/educator.svg'
+import BannerIcon from '../assets/studying.svg'
 import EconIcon from '../assets/econs.png'
 import { Notes } from '@/types/types'
 import { Badge } from '@/components/ui/badge'
@@ -69,7 +69,7 @@ const Home = () => {
     return (
         <div className=" space-y-10">
             <Card className="mb-8">
-                <CardContent className="p-6">
+                <CardContent className="">
                     <div className="flex flex-col md:flex-row items-center justify-between">
                         <div className="mb-4 md:mb-0 md:mr-4">
                             <h2 className="text-3xl font-bold mb-2">
@@ -86,13 +86,13 @@ const Home = () => {
                         <img
                             alt="Student studying"
                             className="rounded-lg"
-                            height="200"
+                            height="100%"
                             src={BannerIcon}
                             style={{
                                 aspectRatio: '300/200',
                                 objectFit: 'cover',
                             }}
-                            width="300"
+                            width="fit"
                         />
                     </div>
                 </CardContent>
@@ -101,7 +101,7 @@ const Home = () => {
                 <div>
                     <p className="text-3xl font-bold">
                         {' '}
-                        What are you looking for?{' '}
+                        Looking to buy notes?{' '}
                     </p>
                     <p className="text-base font-semibold pt-2">
                         {' '}
@@ -116,7 +116,8 @@ const Home = () => {
                     Explore Notes
                 </Button>
             </div>
-
+            
+      
             <section className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">
                     Popular study notes
@@ -155,6 +156,66 @@ const Home = () => {
                     ))}
                 </div>
             </section>
+
+            <div className="h-40  flex flex-col justify-between">
+                <div>
+                    <p className="text-3xl font-bold">
+                        {' '}
+                        Want to sell notes to help others?{' '}
+                    </p>
+                    <p className="text-base font-semibold pt-2">
+                        {' '}
+                        List your notes in the market place!{' '}
+                    </p>
+                </div>
+                <Button
+                    className="w-32 item-bottom"
+                    onClick={() => navigate('/create')}
+                >
+                    {' '}
+                    Create listing
+                </Button>
+            </div>
+
+            <section className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">
+                    Newly listed notes
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    {notesList.map((note) => (
+                        <Card
+                            key={note._id}
+                            className="transform hover:scale-110 transition duration-200"
+                            onClick={() => navigate(`/note/${note._id}`)}
+                        >
+                            <CardContent className="p-4">
+                                <img
+                                    alt={note.title}
+                                    className="rounded-lg mb-2"
+                                    height="100"
+                                    src={note.url}
+                                    style={{
+                                        aspectRatio: '200/100',
+                                        objectFit: 'cover',
+                                    }}
+                                    width="fit"
+                                />
+                                <p className="text-base font-medium">
+                                    {note.title}
+                                </p>
+                                <p className="text-xs font-base pb-4">{note.description}</p>
+                                <Badge
+                                    variant="outline"
+                                    className="bg-background_white"
+                                >
+                                    {note.categoryCode}
+                                </Badge>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </section>
+
         </div>
     )
 }

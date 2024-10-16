@@ -20,9 +20,9 @@ import Token from './pages/Token.tsx'
 // import {useDispatch} from "react-redux";
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import Explore from './pages/Explore.tsx'
-import { LogIn } from 'lucide-react'
 import Login from './pages/Login.tsx'
 import NoteItem from './pages/NoteItem.tsx'
+import CreateNotesListing from './pages/CreateNotes.tsx'
 // const InterceptorsSetup = () => {
 //     const dispatch = useDispatch();
 //     const navigate = useNavigate();
@@ -66,6 +66,7 @@ function App() {
                     />
                     <Route path="market" element={<Explore />}></Route>
                     <Route path="note/:itemId" element={<NoteItem />} />
+                    <Route path="create" element={<CreateNotesListing />} />
 
                     <Route path="payment" element={<Payment />} />
                     <Route path="callback" element={<Callback />} />
