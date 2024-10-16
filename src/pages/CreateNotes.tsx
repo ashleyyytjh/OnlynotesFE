@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -7,7 +7,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { toast } from '@/hooks/use-toast'
+
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ACCEPTED_FILE_TYPES = ["application/pdf"];
 
 const formSchema = z.object({
   title: z.string().min(5, {
@@ -22,10 +25,20 @@ const formSchema = z.object({
   categoryCode:z.string().min(5, {
     message: "Category Code must be at least 5 characters.",
   }),
+  pdfFile: z
+    .custom<FileList>((val) => val instanceof FileList, "Please upload a PDF file.")
+    .refine((files) => files.length > 0, "PDF file is required.")
+    .refine((files) => files[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_FILE_TYPES.includes(files[0]?.type),
+      "Only PDF files are accepted."
+    ),
 })
 
 export default function CreateNotesListing() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,14 +57,20 @@ export default function CreateNotesListing() {
     console.log(values)
     setTimeout(() => {
       setIsSubmitting(false)
-      toast({
-        title: "Listing created!",
-        description: "Your notes have been successfully listed.",
-      })
+      // toast({
+      //   title: "Listing created!",
+      //   description: "Your notes have been successfully listed.",
+      // })
       form.reset()
-    }, 2000) // Simulating API call
+    }, 2000)
   }
-
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setSelectedFileName(file.name)
+      form.setValue('pdfFile', event.target.files as FileList)
+    }
+  }
   return (
     <div className="">
       <h1 className="text-3xl font-bold mb-8 p-2 border-b-2">Create New Notes Listing</h1>
@@ -95,7 +114,54 @@ export default function CreateNotesListing() {
               </FormItem>
             )}
           />
-          
+          <FormField
+            control={form.control}
+            name="pdfFile"
+            render={({ field: { onChange, ...rest } }) => (
+              <FormItem>
+                <FormLabel>Upload PDF</FormLabel>
+                <FormControl>
+                <div className=" text-primary_text">
+                  
+                    <div className=" flex justify-center flex-col items-center bg-background_white min-h-32 max-h-fit rounded-lg p-2 text-primary_subtext shadow">
+                        <div className="rounded-3xl p-4 outline-dotted">
+                            <input 
+                                type="file" 
+                                className="block w-full text-sm text-slate-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-lg file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-black file:text-white"
+                                    onChange={handleFileChange}
+                                />  
+                        </div>
+                        {/* {props.hasFile && (
+                            <div className="flex flex-col items-center">
+                                <label className="font-semibold text-primary_subtext">Image Preview:</label>
+                                {loading && (
+                                    <div className='flex justify-center items-center w-full'>
+                                        <ClipLoader color='#46CEC0' size={50}/>
+                                    </div>
+                                    )}
+                                <img
+                                    src={`${props.imageUrl}`}
+                                    alt="Uploaded File" className={`max-w-full h-auto ${loading ? 'hidden' : ''}`}
+                                    onLoad={handleImageLoad}
+                                    onError={handleImageError}
+                                />
+                            </div>
+                        )} */}
+                      
+                    </div>
+                </div>
+                </FormControl>
+                <FormDescription>
+                  Upload your notes as a PDF file (max 5MB).
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="price"
