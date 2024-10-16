@@ -1,7 +1,11 @@
 import getStripe from '../util/stripe.ts'
 import { Elements } from '@stripe/react-stripe-js'
-// import useFetchData from "../hooks/useFetchData.tsx";
-import { createOrder } from '../services/OrdersService.tsx'
+import useFetchData from "../hooks/useFetchData.tsx";
+import { createOrder, orderWebhook } from '../services/OrdersService.tsx'
+import CheckoutForm from '@/components/CheckoutForm.tsx';
+import Loader from '@/components/Loader.tsx';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const tempOrder = {
     noteId: '1',
@@ -10,54 +14,69 @@ const tempOrder = {
 }
 const Payment = () => {
     const stripePromise = getStripe()
-    // const search = useSearchParams();
+    const navigate = useNavigate()
+    const [isWebhookLoading, setIsWebhookLoading] = useState(true);
+    const [cs, setCs] = useState('')
+    useEffect(() => {
+        const fetchData = async () => {
+            await createOrder(tempOrder).then((data) => {
+                console.log(data);
+                if (data.status === 200) {
+                    const handleMessage = (data : any) => {
+                        console.log('websocket message' , data);
+                        if (data.error) {
+                            navigate('/home')
+                        } else {
+                            setCs(data)
+                            // Update order data received from the server
+                            setIsWebhookLoading(false)
+                        }
+                    };
+            
+                    // Call the orderWebhook function
+                    const socket = orderWebhook(data.order._id, handleMessage);
 
-    // const {data, loading, error} = useFetchData(()=>createOrder(tempOrder));
-    // console.log('data is' , data);
+                    // Clean up the socket connection on component unmount
+                    return () => {
+                        socket.close();
+                    };
+                }
+            })
+        }
+       fetchData()
+    }, []);
     const appearance = {
-        theme: 'night',
+        theme: 'flat',
         labels: 'floating',
     }
 
-    let clientSecret: string | undefined
-    // if (data && typeof data === 'object' && 'client_secret' in data) {
-    //     clientSecret = (data as Record<string, unknown>)[
-    //         'client_secret'
-    //     ] as string
-    // }
-    // const options = data
-    //     ? {
-    //           clientSecret: clientSecret,
-    //           appearance,
-    //       }
-    //     : {}
+    const options = {
+              clientSecret: cs,
+              appearance,
+          }
 
-    // if (loading) {
-    //     // return <CircularProgress/>
-    // }
 
-    // if (error) {
-    //     return <>ERROR loading Data...</>
-    // }
+    if (isWebhookLoading) {
+        return  (
+            <div className='pt-10 flex flex-col justify-center items-center'>
+                <Loader/>
+                <p className='font-bold pt-16 text-2xl'>Hold on! Placing orders</p>
+            </div>
+        )
+    }
+    console.log('FRONTNED CLIENT SECRET', cs)
 
     return (
-        <></>
-        // <Container
-        //     maxWidth="xl"
-        //     sx={{ width: '100vw' }}
-        // >
-        //     <Paper>
-        //         <Box style={{ border: '2px solid white' , padding:20}} // Adjust thickness and color as needed
-        //              height={'fit'} width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} >
-        //             {/*@ts-ignore*/}
-        //             <Elements options={options} stripe={stripePromise}>
-        //                 <CheckoutForm
-        //                     clientSecret = {clientSecret!}
-        //                 />
-        //             </Elements>
-        //         </Box>
-        //     </Paper>
-        // </Container>
+        <div >
+            <div className='h-fit' >
+                {/*@ts-ignore*/}
+                <Elements options={options} stripe={stripePromise}>
+                    <CheckoutForm
+                        clientSecret = {cs}
+                    />
+                </Elements>
+            </div>
+        </div>
     )
 }
 

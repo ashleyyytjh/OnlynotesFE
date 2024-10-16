@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Star, Share2, ShoppingCart } from 'lucide-react'
+import { Star, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -15,11 +15,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import EconIcon from '../assets/econs.png'
 import { Notes } from '@/types/types'
 import { Badge } from '@/components/ui/badge'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const NoteItem = () => {
     const [reviewText, setReviewText] = useState('')
     const [rating, setRating] = useState(0)
-
+    const navigate = useNavigate();
     const item: Notes = {
         _id: '1',
         fk_account_owner: 'user1',
@@ -87,6 +88,7 @@ const NoteItem = () => {
                 'Solid notes! They provided a good overview, but I would have liked more detail in certain areas.',
         },
     ]
+    const { itemId } = useParams<{ itemId: string }>();
 
     return (
         <div className="container mx-auto px-16 py-10">
@@ -120,7 +122,7 @@ const NoteItem = () => {
                     <p className="text-xl font-bold mb-4">${item.price}</p>
                     <p className="mb-6">{item.description}</p>
                     <div className="flex space-x-4 mb-6">
-                        <Button className="flex-1">
+                        <Button className="flex-1" onClick={() => navigate(`/payment?id=${itemId}`)}>
                             <ShoppingCart className="mr-2 h-4 w-4" /> Purchase
                         </Button>
                     </div>
