@@ -21,7 +21,7 @@ const Header = () => {
                 <Input className="w-64" placeholder="Search" type="search" />
                 <img
                     alt="Profile"
-                    onClick={() => navigate('/account-settings')}
+                    onClick={() => navigate('/account-settings#profile')}
                     className="rounded-full"
                     height="32"
                     src={BannerIcon}
