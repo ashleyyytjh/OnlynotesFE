@@ -26,13 +26,13 @@ const formSchema = z.object({
     message: "Category Code must be at least 5 characters.",
   }),
   pdfFile: z
-    .custom<FileList>((val) => val instanceof FileList, "Please upload a PDF file.")
-    .refine((files) => files.length > 0, "PDF file is required.")
-    .refine((files) => files[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_FILE_TYPES.includes(files[0]?.type),
-      "Only PDF files are accepted."
-    ),
+  .instanceof(File) // Expecting a single File
+  .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+  .refine(
+    (file) => ACCEPTED_FILE_TYPES.includes(file.type),
+    "Only PDF files are accepted."
+  )
+  .refine((file) => file !== null, "PDF file is required."), 
 })
 
 export default function CreateNotesListing() {
@@ -51,10 +51,9 @@ export default function CreateNotesListing() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
     console.log('test')
     setIsSubmitting(true)
-    // Send data to backend here
-    console.log(values)
     setTimeout(() => {
       setIsSubmitting(false)
       // toast({
@@ -67,9 +66,12 @@ export default function CreateNotesListing() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      setSelectedFileName(file.name)
-      form.setValue('pdfFile', event.target.files as FileList)
+      setSelectedFileName(file.name); 
+        form.setValue('pdfFile', file); 
+    } else {
+      setSelectedFileName('');
     }
+
   }
   return (
     <div className="">
@@ -122,7 +124,6 @@ export default function CreateNotesListing() {
                 <FormLabel>Upload PDF</FormLabel>
                 <FormControl>
                 <div className=" text-primary_text">
-                  
                     <div className=" flex justify-center flex-col items-center bg-background_white min-h-32 max-h-fit rounded-lg p-2 text-primary_subtext shadow">
                         <div className="rounded-3xl p-4 outline-dotted">
                             <input 

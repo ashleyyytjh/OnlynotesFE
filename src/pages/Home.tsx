@@ -86,13 +86,13 @@ const Home = () => {
                         <img
                             alt="Student studying"
                             className="rounded-lg"
-                            height="100%"
+                            height="100px"
                             src={BannerIcon}
                             style={{
                                 aspectRatio: '300/200',
                                 objectFit: 'cover',
                             }}
-                            width="fit"
+                            width="400"
                         />
                     </div>
                 </CardContent>
