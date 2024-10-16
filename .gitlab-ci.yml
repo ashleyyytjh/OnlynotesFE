@@ -1,0 +1,46 @@
+stages:
+  - test
+  - stage
+
+variables:
+  AWS_ACCESS_KEY_ID: "<YOUR_AWS_ACCESS_KEY_ID>"
+  AWS_SECRET_ACCESS_KEY: "<YOUR_AWS_SECRET_ACCESS_KEY>"
+  AWS_REGION: "us-east-2"
+  AMPLIFY_APP_ID: "<YOUR_AMPLIFY_APP_ID>"
+  AMPLIFY_BRANCH: "main"
+  ACCESS_TOKEN: $GITLAB_TOKEN
+
+test:
+ stage: test
+ image: node:lts-alpine
+ script:
+   - npm install
+   - npm run build
+   - npm run prettier
+
+# stage:
+#   stage: stage
+#   script:
+#   - git config --global user.name "CICD"
+#   - git config --global user.email "CICD@example.com"
+#   - git fetch --all
+#   - echo "$GITLAB_TOKEN"
+#   - git checkout staging
+#   - git merge origin/main
+#   - git push "https://CD-staging:${GITLAB_TOKEN}@gitlab.com//${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git" staging
+#   only:
+#     - main
+
+#TEST
+#release:
+#  stage: release
+#  image: docker:27.1.1
+#  services:
+#    - docker:27.1.1-dind
+#  before_script:
+#    - docker info
+#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+#  script:
+#    - docker build --pull --target production -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" -f ./docker/Dockerfile .
+#    - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA"
+
