@@ -1,16 +1,18 @@
-import { Stripe, loadStripe } from '@stripe/stripe-js';
+import { Stripe, loadStripe } from '@stripe/stripe-js'
 
-let stripePromise: Promise<Stripe | null>;
+let stripePromise: Promise<Stripe | null>
 
 const getStripe = () => {
-    const key =import.meta.env.VITE_STRIPE_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+    const key = import.meta.env.VITE_STRIPE_PUBLIC_STRIPE_PUBLISHABLE_KEY
     if (!key) {
-        throw new Error("Stripe Publishable Key not defined in environment variables.");
+        throw new Error(
+            'Stripe Publishable Key not defined in environment variables.'
+        )
     }
     if (!stripePromise) {
-        stripePromise = loadStripe(key);
+        stripePromise = loadStripe(key)
     }
-    return stripePromise;
-};
+    return stripePromise
+}
 
-export default getStripe;
+export default getStripe

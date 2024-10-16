@@ -1,10 +1,7 @@
-import {Container} from "@mui/material";
-import {useParams} from "react-router-dom";
-
-
+import { useParams } from 'react-router-dom'
 
 const Products = () => {
-    const {list} = useParams();
+    const { list } = useParams()
     const ProductComponentHandler = () => {
         if (list === 'product-listing') {
             return <></>
@@ -21,4 +18,4 @@ const Products = () => {
     )
 }
 
-export default Products;
+export default Products

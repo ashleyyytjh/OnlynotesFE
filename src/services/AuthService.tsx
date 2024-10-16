@@ -1,11 +1,13 @@
-import AxiosInstance from "./AxiosInstance.ts"
+import AxiosInstance from './AxiosInstance.ts'
 
-export const codeExchange = async (code : string) => {
+export const codeExchange = async (code: string) => {
     try {
-        const response = await AxiosInstance.get('/api/v1/auth/callback?code='+code)
+        const response = await AxiosInstance.get(
+            '/api/v1/auth/callback?code=' + code
+        )
         return response.data
     } catch (error) {
-        throw error;
+        throw error
     }
 }
 
@@ -14,7 +16,7 @@ export const refreshToken = async () => {
         const response = await AxiosInstance.get('/api/v1/auth/refreshToken')
         return response.data
     } catch (error) {
-        throw error;
+        throw error
     }
 }
 
@@ -23,7 +25,7 @@ export const authTest = async () => {
         const response = await AxiosInstance.get('/api/v1/auth/test')
         return response.data
     } catch (error) {
-        throw error;
+        throw error
     }
 }
 
@@ -32,16 +34,16 @@ export const logout = async () => {
         const response = await AxiosInstance.get('/api/v1/auth/logout')
         return response.data
     } catch (error) {
-        throw error;
+        throw error
     }
 }
 
 export const isAuthenticated = async () => {
     try {
         const response = await AxiosInstance.get('/api/v1/auth').then()
-        console.log("AUTH: ", response.status == 200)
+        console.log('AUTH: ', response.status == 200)
         return response.status == 200
     } catch (error) {
-        throw error;
+        throw error
     }
 }

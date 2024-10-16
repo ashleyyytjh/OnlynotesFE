@@ -1,7 +1,6 @@
-import {authTest} from "../services/AuthService.tsx";
+import { authTest } from '../services/AuthService.tsx'
 
 const Token = () => {
-
     const response = authTest()
 
     return <div></div>

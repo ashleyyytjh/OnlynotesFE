@@ -7,8 +7,9 @@ export type Notes = {
     fk_account_owner: string
     title: string
     description: string
-    url: string
+    url: string //s3 bucket
     price: number
+    categoryCode: string
 }
 
 export type Account = {

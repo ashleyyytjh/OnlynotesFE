@@ -1,8 +1,5 @@
 const SecondaryHome = () => {
-    return (
-        <></>
-    )
+    return <></>
 }
 
-export default SecondaryHome;
-
+export default SecondaryHome
