@@ -14,6 +14,7 @@ import {
 import { useLocation } from 'react-router-dom'
 import Profile from '@/components/Profile.tsx'
 import ProductList from '@/components/ProductList.tsx'
+import OrderListingTable from '@/components/OrderListTable.tsx'
 
 const logoutHandle = async () => {
     logout().then(() => {
@@ -42,7 +43,7 @@ const AccountSettings = () => {
         } else if (hash === "product-listing") {
             return <ProductList/>
         } else if (hash === "orders") {
-            return <>orders</>
+            return <OrderListingTable/>
         } else {
             return <>Select a section to view.</>; 
         }

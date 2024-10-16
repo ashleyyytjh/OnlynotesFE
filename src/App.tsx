@@ -23,6 +23,7 @@ import Explore from './pages/Explore.tsx'
 import Login from './pages/Login.tsx'
 import NoteItem from './pages/NoteItem.tsx'
 import CreateNotesListing from './pages/CreateNotes.tsx'
+import ScrollTop from './components/scrollTop.tsx'
 // const InterceptorsSetup = () => {
 //     const dispatch = useDispatch();
 //     const navigate = useNavigate();
@@ -42,6 +43,7 @@ function App() {
     return (
         <BrowserRouter>
             {/* <InterceptorsSetup/> */}
+            <ScrollTop /> 
             <Routes>
                 {/* Redirect root path to /login */}
                 <Route path="/" element={<Navigate to="/login" replace />} />
