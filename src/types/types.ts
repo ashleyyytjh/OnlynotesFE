@@ -1,0 +1,48 @@
+export type SampleType = {
+    id: string
+}
+
+export type Notes = {
+    _id: string
+    fk_account_owner: string
+    title: string
+    description: string
+    url: string
+    price: number
+}
+
+export type Account = {
+    cognito_id: number
+    _id: string
+    username: string
+    email: string
+    contact: string
+}
+
+export type User = {
+    _id: string
+    fk_account_user: string
+    total_reviews: number
+    total_rating: number
+}
+
+export type Order = {
+    _id: string
+    stripe_transaction_id: string
+    noteId: string
+    buyerId: string
+    status: string
+    price: number
+}
+
+export type Stripe = {
+    stripe_id: string
+    fk_account_user: string
+}
+
+export type Review = {
+    _id: string
+    fk_account_reviewer: string
+    fk_account_user: string
+    rating: number
+}
