@@ -1,9 +1,9 @@
-import { useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from './ui/pagination'
-import { Notes, Order } from '@/types/types'
-import EconIcon from '../assets/econs.png'
+import {  Order } from '@/types/types'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query';
+import { getOrders } from "@/services/OrdersService";
 
 const orderList : Order[] = [
     {
@@ -37,15 +37,20 @@ const orderList : Order[] = [
 const OrderListingTable = () =>{
     const navigate =  useNavigate();
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPages = 7
+    const userId = 1
+    const { data: orders, error, isLoading } = useQuery<Order[], Error>({
+        queryKey: ['orders', userId],
+        queryFn: () => getOrders(1),
+    })
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error retrieving orders. Please refresh and try again </div>;
 
   return (
     <div className='mt-10 pt-5 rounded-2xl shadow'>
       <Table>
         <TableHeader>
           <TableRow>
-            {/* <TableHead className="w-[300px]">Product</TableHead> */}
             <TableHead>Order ID</TableHead>
             <TableHead>Notes ID</TableHead>
             <TableHead>Price</TableHead>
@@ -53,16 +58,15 @@ const OrderListingTable = () =>{
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orderList.map((order, index) => (
+          {orders!.map((order, index) => (
             <TableRow key={order._id} className={`${index % 2 === 0 ? '' : ''} cursor-pointer`} >
-         
               <TableCell className="">{order._id}</TableCell>
               <TableCell className="">{order.noteId}</TableCell>
               <TableCell>${order.orderPrice}</TableCell>
 
               <TableCell>
                 <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                  order.orderStatus === 'succeeded' ? 'bg-gray-200 text-gray-800' : 'bg-orange-500 text-white'
+                  order.orderStatus !== 'successful' ? 'bg-gray-200 text-gray-800' : 'bg-orange-500 text-white'
                 }`}>
                   {order.orderStatus.toLocaleUpperCase()}
                 </span>

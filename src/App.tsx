@@ -24,6 +24,8 @@ import Login from './pages/Login.tsx'
 import NoteItem from './pages/NoteItem.tsx'
 import CreateNotesListing from './pages/CreateNotes.tsx'
 import ScrollTop from './components/scrollTop.tsx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 // const InterceptorsSetup = () => {
 //     const dispatch = useDispatch();
 //     const navigate = useNavigate();
