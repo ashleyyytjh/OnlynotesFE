@@ -1,0 +1,14 @@
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: production  # Or "development"
+    environment:
+      NODE_ENV: production
+    ports:
+      - 80:80
+
+
