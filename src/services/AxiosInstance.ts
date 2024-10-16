@@ -29,36 +29,34 @@ export const setupInterceptors = (
 function isTokenExpired() {
     const expiration = document.cookie
         .split('; ')
-        .find((row) => row.startsWith('access_token_expire'))
-        ?.split('=')[1]
-    return Date.now() > Number(expiration)
+        .find(row => row.startsWith('access_token_expire'))
+        ?.split('=')[1];
+    return (Date.now()) > Number(expiration);
 }
 
 let unprotectedRoutes = ['/api/v1/auth']
 
-let isRefreshing = false // Flag to prevent multiple refresh requests
+let isRefreshing = false; // Flag to prevent multiple refresh requests
 
-api.interceptors.request.use(
-    async (config) => {
-        if (unprotectedRoutes.some((route) => config!.url!.includes(route))) {
-            return config
-        }
-        if (isTokenExpired() && !isRefreshing) {
-            isRefreshing = true // Prevent multiple refreshes
-            console.log('Token expired, refreshing...')
-            try {
-                await refreshToken()
-            } catch (error) {
-                console.error('Token refresh failed:', error)
-            } finally {
-                isRefreshing = false // Reset flag after refresh attempt
-            }
-        }
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
+api.interceptors.request.use(async (config) => {
+    if (unprotectedRoutes.some(route => config!.url!.includes(route))) {
+        return config;
     }
-)
+    if (isTokenExpired() && !isRefreshing) {
+        isRefreshing = true; // Prevent multiple refreshes
+        console.log("Token expired, refreshing...");
+
+        try {
+            await refreshToken();
+        } catch (error) {
+            console.error("Token refresh failed:", error);
+        } finally {
+            isRefreshing = false; // Reset flag after refresh attempt
+        }
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
 export default api

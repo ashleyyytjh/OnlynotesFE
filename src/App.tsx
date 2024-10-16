@@ -55,28 +55,23 @@ function App() {
                 <Route path="/login" element={<Login />} />
 
                 {/* Protected routes for other paths */}
-                <Route
-                    path="/"
-                    element={
-                        <ProtectedRoute>
-                            <Layout />
-                        </ProtectedRoute>
-                    }
-                >
-                    <Route path='/home' element={<Home />} />
-                    <Route path="products/:list" element={<Products />} />
-                    <Route
-                        path="account-settings"
-                        element={<AccountSettings />}
-                    />
-                    <Route path="market" element={<Explore />}></Route>
-                    <Route path="note/:itemId" element={<NoteItem />} />
-                    <Route path="create" element={<CreateNotesListing />} />
-                    <Route path="successful-payment" element={<PaymentSuccessful />} />
+                <Route element={<ProtectedRoute/>}>
+                    <Route path='/'element={<Layout/>}>
+                        <Route path='/home' element={<Home />} />
+                        <Route path="products/:list" element={<Products />} />
+                        <Route
+                            path="account-settings"
+                            element={<AccountSettings />}
+                        />
+                        <Route path="market" element={<Explore />}></Route>
+                        <Route path="note/:itemId" element={<NoteItem />} />
+                        <Route path="create" element={<CreateNotesListing />} />
+                        <Route path="successful-payment" element={<PaymentSuccessful />} />
 
-                    <Route path="payment" element={<Payment />} />
-                    <Route path="callback" element={<Callback />} />
-                    <Route path="token" element={<Token />} />
+                        <Route path="payment" element={<Payment />} />
+                        <Route path="callback" element={<Callback />} />
+                        <Route path="token" element={<Token />} />
+                    </Route>
                 </Route>
 
                 {/* Replace this with error 404 page later  */}
