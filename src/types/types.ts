@@ -29,11 +29,11 @@ export type User = {
 
 export type Order = {
     _id: string
-    stripe_transaction_id: string
+    stripeTransactionId: string
     noteId: string
     buyerId: string
-    status: string
-    price: number
+    orderStatus: string
+    orderPrice: number
 }
 
 export type Stripe = {
