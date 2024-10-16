@@ -24,6 +24,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+  } from "@/components/ui/pagination"
+
+  
 import EconIcon from '../assets/econs.png'
 import { Notes } from '@/types/types'
 import { Badge } from '@/components/ui/badge'
@@ -109,7 +121,7 @@ const Explore = () => {
         navigate(`/note/${id}`)
     }
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="">
             <h1 className="text-3xl font-bold mb-8"> Marketplace</h1>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
@@ -208,9 +220,9 @@ const Explore = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                 {filteredNotes.map((note) => (
-                    <Card key={note._id} className="flex flex-col">
+                    <Card key={note._id} className="flex flex-col transform hover:scale-110 transition duration-200">
                         <CardHeader>
                             <CardTitle className="text-xl">
                                 {note.title}
@@ -226,17 +238,22 @@ const Explore = () => {
                                     objectFit: 'cover',
                                 }}
                             />
-                            <Badge
-                                variant="outline"
-                                className="bg-background_white"
-                            >
-                                {note.categoryCode}
-                            </Badge>
-                            <div className="flex justify-between items-center">
-                                <span className="font-bold text-base">
-                                    ${note.price.toFixed(2)}
-                                </span>
+                            <div className='flex flex-row justify-between pb-2'>
+                                <Badge
+                                    variant="outline"
+                                    className="bg-background_white"
+                                >
+                                    {note.categoryCode}
+                                </Badge>
+                                <div className="flex justify-between items-center">
+                                    <span className="font-bold text-base">
+                                        ${note.price.toFixed(2)}
+                                    </span>
+                                </div>
                             </div>
+                    
+                            <p className="text-base font-base">{note.description}</p>
+
                         </CardContent>
                         <CardFooter className="mt-auto">
                             <Button
@@ -249,6 +266,23 @@ const Explore = () => {
                     </Card>
                 ))}
             </div>
+            <Pagination>
+                <PaginationContent>
+                    <PaginationItem>
+                        <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                        <PaginationLink href="#">1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                        <PaginationEllipsis />
+                    </PaginationItem>
+                    <PaginationItem>
+                        <PaginationNext href="#" />
+                    </PaginationItem>
+                </PaginationContent>
+            </Pagination>
+
         </div>
     )
 }

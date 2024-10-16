@@ -4,14 +4,16 @@ import { isAuthenticated } from '../services/AuthService.tsx'
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     const [auth, setAuth] = useState<boolean>(true)
-    // useEffect( () => {
-    //     const fetchData = async () => {
-    //         await isAuthenticated().then((data) => {
-    //             setAuth(data);
-    //         })
-    //     }
-    //     fetchData()
-    // },[])
+    useEffect( () => {
+        console.log('fetching authentication data')
+        const fetchData = async () => {
+            await isAuthenticated().then((data) => {
+                console.log(data);
+                setAuth(data);
+            })
+        }
+        fetchData();
+    },[])
     return auth ? children : <Navigate to="/login" replace />
 }
 

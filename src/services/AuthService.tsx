@@ -40,7 +40,7 @@ export const logout = async () => {
 
 export const isAuthenticated = async () => {
     try {
-        const response = await AxiosInstance.get('/api/v1/auth').then()
+        const response = await AxiosInstance.get('/api/v1/auth')
         console.log('AUTH: ', response.status == 200)
         return response.status == 200
     } catch (error) {

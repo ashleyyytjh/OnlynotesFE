@@ -13,7 +13,6 @@ import AccountSettings from './pages/AccountSettings.tsx'
 import Payment from './pages/Payment.tsx'
 import Callback from './pages/Callback'
 import Token from './pages/Token.tsx'
-import HomeLayout from './components/HomeLayout.tsx'
 // import {useEffect} from "react";
 // import {setupInterceptors} from "./services/AxiosInstance.ts";
 // import {logIn} from "./redux/reducer/auth.reducer.ts";
@@ -50,18 +49,6 @@ function App() {
                 {/* Public route for login */}
                 <Route path="/login" element={<Login />} />
 
-                {/* Protected Home route */}
-                <Route
-                    path="/home"
-                    element={
-                        <ProtectedRoute>
-                            <Layout />
-                        </ProtectedRoute>
-                    }
-                >
-                    <Route index element={<Home />} />
-                </Route>
-
                 {/* Protected routes for other paths */}
                 <Route
                     path="/"
@@ -71,6 +58,7 @@ function App() {
                         </ProtectedRoute>
                     }
                 >
+                    <Route path='/home' element={<Home />} />
                     <Route path="products/:list" element={<Products />} />
                     <Route
                         path="account-settings"

@@ -67,7 +67,7 @@ const notesList: Notes[] = [
 const Home = () => {
     const navigate = useNavigate()
     return (
-        <div className="container  mx-auto px-4 py-8 space-y-10">
+        <div className=" space-y-10">
             <Card className="mb-8">
                 <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row items-center justify-between">
@@ -126,6 +126,7 @@ const Home = () => {
                         <Card
                             key={note._id}
                             className="transform hover:scale-110 transition duration-200"
+                            onClick={() => navigate(`/note/${note._id}`)}
                         >
                             <CardContent className="p-4">
                                 <img
