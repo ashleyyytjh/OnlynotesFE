@@ -24,24 +24,10 @@ import Login from './pages/Login.tsx'
 import NoteItem from './pages/NoteItem.tsx'
 import CreateNotesListing from './pages/CreateNotes.tsx'
 import ScrollTop from './components/scrollTop.tsx'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import PaymentSuccessful from './pages/PaymentSuccessful.tsx'
+import Error from './pages/Error.tsx'
+import PaymentUnsuccessful from './pages/PaymentUnsuccesful.tsx'
 
-// const InterceptorsSetup = () => {
-//     const dispatch = useDispatch();
-//     const navigate = useNavigate();
-//     useEffect(() => {
-//         // console.log("should be only ran once")
-//         setupInterceptors(dispatch, navigate);
-//     }, []);
-
-//     useEffect(() => {
-//         if (localStorage.getItem('authToken')) {
-//             dispatch(logIn());
-//         }
-//     }, []);
-//     return null;
-// };
 function App() {
     return (
         <BrowserRouter>
@@ -67,15 +53,14 @@ function App() {
                         <Route path="note/:itemId" element={<NoteItem />} />
                         <Route path="create" element={<CreateNotesListing />} />
                         <Route path="successful-payment" element={<PaymentSuccessful />} />
-
                         <Route path="payment" element={<Payment />} />
                         <Route path="callback" element={<Callback />} />
                         <Route path="token" element={<Token />} />
+                        <Route path="unsuccessful-payment" element={<PaymentUnsuccessful/>} />
                     </Route>
                 </Route>
 
-                {/* Replace this with error 404 page later  */}
-                {/*<Route path="/" element={<Navigate to="/login" replace />} />*/}
+                <Route path="*" element={<Error/>} />
             </Routes>
         </BrowserRouter>
     )

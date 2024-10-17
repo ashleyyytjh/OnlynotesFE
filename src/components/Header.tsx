@@ -4,6 +4,10 @@ import BannerIcon from '../assets/educator.svg'
 import OnlyNotesIcon from '../assets/logodark.png'
 import { Button } from './ui/button'
 import { logout } from '@/services/AuthService'
+import { User, CircleUserRound } from 'lucide-react'
+
+const headerItems : string[] = [
+]
 const Header = () => {
     const navigate = useNavigate()
 
@@ -15,34 +19,51 @@ const Header = () => {
             throw error;
         }
     }
+
+    const goToMarket =() => {
+        try {
+           navigate('/market')
+        } catch (error) {
+            throw error;
+        }
+    }
+    const goToSell =() => {
+        try {
+           navigate('/create')
+        } catch (error) {
+            throw error;
+        }
+    }
     return (
         <header className="z-10 flex justify-between items-center h-16 p-5 shadow w-full">
-            <img
-                alt="Logo"
-                className=" w-32"
-                height="32"
-                src={OnlyNotesIcon}
-                onClick={() => navigate('/home')}
-                style={{
-                    objectFit: 'cover',
-                }}
-                width="32"
-            />
-            <div className="flex items-center space-x-4">
-                <Input className="w-64" placeholder="Search" type="search" />
+            <div className='flex items-center space-x-6'>
                 <img
-                    alt="Profile"
-                    onClick={() => navigate('/account-settings#profile')}
-                    className="rounded-full"
+                    alt="Logo"
+                    className=" w-32"
                     height="32"
-                    src={BannerIcon}
+                    src={OnlyNotesIcon}
+                    onClick={() => navigate('/home')}
                     style={{
-                        aspectRatio: '32/32',
                         objectFit: 'cover',
                     }}
                     width="32"
                 />
-                <Button onClick={() => logOutHandler()}> Log out </Button>
+                <Input className="w-56" placeholder="Search" type="search" />
+            </div>
+     
+
+
+            <div className="flex items-center space-x-4">
+                <div>
+                    <Button variant='ghost' onClick={() => goToMarket()}> Explore </Button>
+                    <Button variant='ghost' onClick={() => goToSell()}> Sell </Button>
+                </div>
+                <CircleUserRound 
+                    strokeWidth={1} 
+                    className=' w-10  h-fit' 
+                    onClick={() => navigate('/account-settings#profile')}
+                />
+                <Button variant='ghost' onClick={() => logOutHandler()}> Logout </Button>
             </div>
         </header>
     )
