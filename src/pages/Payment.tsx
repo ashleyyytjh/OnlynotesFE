@@ -20,19 +20,15 @@ const Payment = () => {
     useEffect(() => {
         const fetchData = async () => {
             await createOrder(tempOrder).then((data) => {
-                console.log(data);
                 if (data.status === 200) {
                     const handleMessage = (data : any) => {
-                        console.log('websocket message' , data);
                         if (data.error) {
-                            navigate('/home')
+                            navigate('/unsuccessful-payment')
                         } else {
                             setCs(data)
-                            // Update order data received from the server
                             setIsWebhookLoading(false)
                         }
                     };
-            
                     // Call the orderWebhook function
                     const socket = orderWebhook(data.order._id, handleMessage);
 
