@@ -65,28 +65,7 @@ const NoteItem = () => {
             rating: 4,
             content:
                 'Great notes! Very informative and easy to understand. I learned a lot from them.',
-        },
-        {
-            id: 6,
-            author: 'Frank Martinez',
-            rating: 5,
-            content:
-                'This was a lifesaver! Perfect for revision and very well organized. Would definitely buy again.',
-        },
-        {
-            id: 7,
-            author: 'Grace Thompson',
-            rating: 1,
-            content:
-                "I was really disappointed. The notes were incomplete and didn't cover important topics.",
-        },
-        {
-            id: 8,
-            author: 'Henry Brown',
-            rating: 4,
-            content:
-                'Solid notes! They provided a good overview, but I would have liked more detail in certain areas.',
-        },
+        }
     ]
     const { itemId } = useParams<{ itemId: string }>();
 
@@ -140,12 +119,12 @@ const NoteItem = () => {
 
             <div className="mt-12">
                 <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-                <div className="grid gap-6">
+                <div className="grid gap-4">
                     {reviews.map((review) => (
                         <Card key={review.id}>
                             <CardHeader>
                                 <div className="flex items-center">
-                                    <Avatar className="h-8 w-8 mr-2">
+                                    <Avatar className="h-4 w-4 mr-2">
                                         <AvatarImage
                                             src={`https://api.dicebear.com/6.x/initials/svg?seed=${review.author}`}
                                         />
@@ -153,7 +132,7 @@ const NoteItem = () => {
                                             {review.author[0]}
                                         </AvatarFallback>
                                     </Avatar>
-                                    <CardTitle>{review.author}</CardTitle>
+                                    <CardTitle className="text-2xl">{review.author}</CardTitle>
                                 </div>
                             </CardHeader>
                             <CardContent>
