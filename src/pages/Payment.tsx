@@ -19,6 +19,7 @@ const Payment = () => {
             try {
                 const id = searchParams.get('id');
                 const data = await getNotesById(`${id}`)
+                console.log("fetched data", data)
                 const tempOrder = {
                     noteId: data.response._id,
                     buyerId: data.response.fkAccountOwner,
@@ -26,7 +27,9 @@ const Payment = () => {
                 }
                          
                 await createOrder(tempOrder).then((data) => {
+                    console.log('create order data is' , data);
                     if (data.status === 200) {
+
                         const handleMessage = (data : any) => {
                             if (data.error) {
                                 navigate('/unsuccessful-payment')
@@ -36,7 +39,7 @@ const Payment = () => {
                             }
                         };
                         // Call the orderWebhook function
-                        const socket = orderWebhook(data.order._id, handleMessage);
+                        const socket = orderWebhook(data.orderId, handleMessage);
 
                         // Clean up the socket connection on component unmount
                         return () => {

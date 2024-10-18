@@ -33,7 +33,6 @@ const PaymentUnsuccessful = () => {
       </div>
 
       <div className="mt-8 text-center">
-        <p className="text-gray-600">A confirmation email has been sent to your registered email address.</p>
         <Button variant="link" className="mt-2" onClick={() => {navigate('/home')}}>
           Return to Homepage
         </Button>

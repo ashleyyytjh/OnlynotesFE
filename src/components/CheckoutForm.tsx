@@ -10,7 +10,7 @@ import {StripePaymentElementOptions} from "@stripe/stripe-js";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import EconIcon from '../assets/econs.png'
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getNotesById } from "@/services/NotesService";
 import Loader from "./Loader";
@@ -21,7 +21,8 @@ interface Props {
 
 const CheckoutForm: React.FC<Props> = (props: Props) => {
 
-    const { itemId } = useParams<{ itemId: string }>();
+    const [search]= useSearchParams();
+    const itemId = search.get('id');
     console.log(itemId)
     const {data, isLoading, error} = useQuery({
         queryKey: ['noteItem'],
