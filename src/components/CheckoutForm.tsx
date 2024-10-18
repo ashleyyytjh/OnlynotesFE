@@ -10,27 +10,34 @@ import {StripePaymentElementOptions} from "@stripe/stripe-js";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import EconIcon from '../assets/econs.png'
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getNotesById } from "@/services/NotesService";
+import Loader from "./Loader";
+import { convertCentsToDollar } from "@/util/util";
 interface Props {
     clientSecret: string
 }
 
 const CheckoutForm: React.FC<Props> = (props: Props) => {
-    const order = {
-        _id: '6',
-        fk_account_owner: 'user6',
-        title: 'English 101 Notes',
-        description: 'Notes covering grammar, literature, and essay writing.',
-        url: EconIcon,
-        price: 22,
-        categoryCode: 'ENG101',
-    }
 
+    const { itemId } = useParams<{ itemId: string }>();
+    console.log(itemId)
+    const {data, isLoading, error} = useQuery({
+        queryKey: ['noteItem'],
+        queryFn: () => getNotesById(`${itemId}`)
+    })
+    
+    if (isLoading) {
+        return <Loader/>
+    }
+    const item = data?.response
     const stripe = useStripe();
     const elements = useElements();
     // const [email, setEmail] = useState("");
     const [message, setMessage] = useState<string>("");
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isStripeLoading, setIsStripeLoading] = useState(false);
     const clientSecret= props.clientSecret;
     // const route = useRouter();
 
@@ -60,9 +67,9 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
         if (!stripe || !elements) {
             return;
         }
-        setIsLoading(true);
+        setIsStripeLoading(true);
 
-        const returnURL =`http://localhost:5173/payment-successful`;
+        const returnURL =`http://localhost:5173/successful-payment`;
 
         const { error } = await stripe.confirmPayment({
             elements,
@@ -74,7 +81,7 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
         if (error) {
             setMessage(error.message || "An unexpected error occurred.");
         }
-        setIsLoading(false);
+        setIsStripeLoading(false);
     };
 
 
@@ -93,20 +100,20 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
                     </CardHeader>
                     <CardContent className="">
                     <img
-                        src={order.url}
+                        src={item.url}
                         alt="Preview Of Notes"
                         className="w-96 h-auto rounded-lg shadow-lg"
                         />
                     <div className="flex justify-between items-center pt-10">
-                        <span className="font-medium">{order.title}</span>
-                        <span>${order.price}</span>
+                        <span className="font-medium">{item.title}</span>
+                        <span>${convertCentsToDollar(item.price)}</span>
                     </div>
-                    <span className="font-base">{order.description}</span>
+                    <span className="font-base">{item.description}</span>
 
                     <Separator />
                     <div className="flex justify-between items-center font-bold ">
                         <span>Total</span>
-                        <span>${order.price}</span>
+                        <span>${convertCentsToDollar(item.price)}</span>
                     </div>
                     </CardContent>
                 </Card>

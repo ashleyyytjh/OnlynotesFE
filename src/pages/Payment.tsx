@@ -1,43 +1,57 @@
 import getStripe from '../util/stripe.ts'
 import { Elements } from '@stripe/react-stripe-js'
-import useFetchData from "../hooks/useFetchData.tsx";
 import { createOrder, orderWebhook } from '../services/OrdersService.tsx'
 import CheckoutForm from '@/components/CheckoutForm.tsx';
 import Loader from '@/components/Loader.tsx';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { getNotesById } from '@/services/NotesService.tsx';
 
-const tempOrder = {
-    noteId: '1',
-    buyerId: '1',
-    orderPrice: 50000,
-}
 const Payment = () => {
     const stripePromise = getStripe()
     const navigate = useNavigate()
     const [isWebhookLoading, setIsWebhookLoading] = useState(true);
     const [cs, setCs] = useState('')
+    const [searchParams] = useSearchParams(); // Get the search parameters
+
     useEffect(() => {
         const fetchData = async () => {
-            await createOrder(tempOrder).then((data) => {
-                if (data.status === 200) {
-                    const handleMessage = (data : any) => {
-                        if (data.error) {
-                            navigate('/unsuccessful-payment')
-                        } else {
-                            setCs(data)
-                            setIsWebhookLoading(false)
-                        }
-                    };
-                    // Call the orderWebhook function
-                    const socket = orderWebhook(data.order._id, handleMessage);
-
-                    // Clean up the socket connection on component unmount
-                    return () => {
-                        socket.close();
-                    };
+            try {
+                const id = searchParams.get('id');
+                const data = await getNotesById(`${id}`)
+                const tempOrder = {
+                    noteId: data.response._id,
+                    buyerId: data.response.fkAccountOwner,
+                    orderPrice: data.response.price,
                 }
-            })
+                         
+                await createOrder(tempOrder).then((data) => {
+                    if (data.status === 200) {
+                        const handleMessage = (data : any) => {
+                            if (data.error) {
+                                navigate('/unsuccessful-payment')
+                            } else {
+                                setCs(data)
+                                setIsWebhookLoading(false)
+                            }
+                        };
+                        // Call the orderWebhook function
+                        const socket = orderWebhook(data.order._id, handleMessage);
+
+                        // Clean up the socket connection on component unmount
+                        return () => {
+                            socket.close();
+                        };
+                    }
+                })
+               
+            } catch (error) {
+                // navigate('/unsuccessful-payment')
+
+            }
+         
+         
+   
         }
        fetchData()
     }, []);
