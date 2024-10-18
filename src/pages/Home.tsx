@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getAllVerifiedNotes } from '@/services/NotesService'
 import Loader from '@/components/Loader'
-import PdfPreview from '@/components/PdfPreview'
 const notesList: Notes[] = [
     {
         _id: '1',
