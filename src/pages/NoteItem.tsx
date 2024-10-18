@@ -16,20 +16,15 @@ import EconIcon from '../assets/econs.png'
 import { Notes } from '@/types/types'
 import { Badge } from '@/components/ui/badge'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getNotesById } from '@/services/NotesService'
+import { convertCentsToDollar } from '@/util/util'
+import Loader from '@/components/Loader'
 
 const NoteItem = () => {
     const [reviewText, setReviewText] = useState('')
     const [rating, setRating] = useState(0)
     const navigate = useNavigate();
-    const item: Notes = {
-        _id: '1',
-        fk_account_owner: 'user1',
-        title: 'Biology 101 Notes',
-        description: 'Comprehensive notes covering the basics of Biology.',
-        url: EconIcon,
-        price: 15,
-        categoryCode: 'BIO101',
-    }
     const reviews = [
         {
             id: 1,
@@ -68,13 +63,24 @@ const NoteItem = () => {
         }
     ]
     const { itemId } = useParams<{ itemId: string }>();
+    console.log(itemId)
+    const {data, isLoading, error} = useQuery({
+        queryKey: ['noteItem'],
+        queryFn: () => getNotesById(`${itemId}`)
+    })
+    
+    if (isLoading) {
+        return <Loader></Loader>
+    }
+    const item = data?.response
 
+    console.log(data);
     return (
         <div className="container mx-auto px-16 py-10">
             <div className="grid md:grid-cols-2 gap-8">
                 <div>
                     <img
-                        src={item.url}
+                        src={EconIcon}
                         alt="Preview Of Notes"
                         className="w-full h-auto rounded-lg shadow-lg"
                     />
@@ -98,10 +104,10 @@ const NoteItem = () => {
                     <Badge variant="outline" className="bg-background_white text-base mb-2">
                         {item.categoryCode}
                     </Badge>
-                    <p className="text-xl font-bold mb-4">${item.price}</p>
+                    <p className="text-xl font-bold mb-4">${convertCentsToDollar(item.price)}</p>
                     <p className="mb-6">{item.description}</p>
                     <div className="flex space-x-4 mb-6">
-                        <Button className="flex-1" onClick={() => navigate(`/payment?id=${itemId}`)}>
+                        <Button className="flex-1" onClick={() => navigate(`/payment?id=${item._id}`)}>
                             <ShoppingCart className="mr-2 h-4 w-4" /> Purchase
                         </Button>
                     </div>

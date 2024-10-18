@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { createNotes } from '@/services/NotesService'
 
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -38,7 +39,6 @@ const formSchema = z.object({
 export default function CreateNotesListing() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,10 +51,12 @@ export default function CreateNotesListing() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    console.log('test')
     setIsSubmitting(true)
-    setTimeout(() => {
+    setTimeout(async() => {
+      const data = await createNotes(form);
+      if (data.status === 200) {
+        console.log('successfully created');
+      } 
       setIsSubmitting(false)
       // toast({
       //   title: "Listing created!",

@@ -6,6 +6,10 @@ import EconIcon from '../assets/econs.png'
 import { Notes } from '@/types/types'
 import { Badge } from '@/components/ui/badge'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getAllVerifiedNotes } from '@/services/NotesService'
+import Loader from '@/components/Loader'
+import PdfPreview from '@/components/PdfPreview'
 const notesList: Notes[] = [
     {
         _id: '1',
@@ -15,6 +19,7 @@ const notesList: Notes[] = [
         url: EconIcon,
         price: 15,
         categoryCode: 'BIO101',
+        status:'verified'
     },
     {
         _id: '2',
@@ -24,6 +29,8 @@ const notesList: Notes[] = [
         url: EconIcon,
         price: 20,
         categoryCode: 'CHE101',
+        status:'verified'
+
     },
     {
         _id: '3',
@@ -34,6 +41,8 @@ const notesList: Notes[] = [
         url: EconIcon,
         price: 10,
         categoryCode: 'PHY101',
+        status:'verified'
+
     },
     {
         _id: '4',
@@ -43,6 +52,8 @@ const notesList: Notes[] = [
         url: EconIcon,
         price: 25,
         categoryCode: 'MTH101',
+        status:'verified'
+
     },
     {
         _id: '5',
@@ -52,6 +63,8 @@ const notesList: Notes[] = [
         url: EconIcon,
         price: 18,
         categoryCode: 'HIS101',
+        status:'verified'
+
     },
     {
         _id: '6',
@@ -61,11 +74,24 @@ const notesList: Notes[] = [
         url: EconIcon,
         price: 22,
         categoryCode: 'ENG101',
+        status:'verified'
+
     },
 ]
 
 const Home = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const {data, isLoading, error} = useQuery({
+        queryKey:['notesData'],
+        queryFn: () => getAllVerifiedNotes(`0`, `4`)
+    })
+
+    if (isLoading){
+        return <Loader></Loader>
+    }
+
+    const notes : Notes[] = data!.response
     return (
         <div className=" space-y-10">
             <Card className="mb-8">
@@ -123,7 +149,7 @@ const Home = () => {
                     Popular study notes
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {notesList.map((note) => (
+                    {notes.map((note) => (
                         <Card
                             key={note._id}
                             className="transform hover:scale-110 transition duration-200"
@@ -134,13 +160,14 @@ const Home = () => {
                                     alt={note.title}
                                     className="rounded-lg mb-2"
                                     height="100"
-                                    src={note.url}
+                                    src={EconIcon}
                                     style={{
                                         aspectRatio: '200/100',
                                         objectFit: 'cover',
                                     }}
                                     width="fit"
                                 />
+                                {/* <PdfPreview pdfUrl={note.url}></PdfPreview> */}
                                 <p className="text-base font-medium">
                                     {note.title}
                                 </p>
@@ -182,7 +209,7 @@ const Home = () => {
                     Newly listed notes
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {notesList.map((note) => (
+                    {notes.map((note) => (
                         <Card
                             key={note._id}
                             className="transform hover:scale-110 transition duration-200"

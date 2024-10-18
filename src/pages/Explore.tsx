@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Search, Filter, ChevronDown } from 'lucide-react'
+import { Search, Filter, ChevronDown, Loader } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -37,89 +37,106 @@ import {
 
   
 import EconIcon from '../assets/econs.png'
-import { Notes } from '@/types/types'
+import { Notes, Order } from '@/types/types'
 import { Badge } from '@/components/ui/badge'
 import { useNavigate } from 'react-router-dom'
+import { getAllVerifiedNotes } from '@/services/NotesService'
+import { useQuery } from '@tanstack/react-query'
+import { convertCentsToDollar } from '@/util/util'
+import PaginationMINE from '@/components/Pagination'
+import useSearchParamsHandler from '@/hooks/useSearchParamsHandler'
 
-const notesList: Notes[] = [
-    {
-        _id: '1',
-        fk_account_owner: 'user1',
-        title: 'Biology 101 Notes',
-        description: 'Comprehensive notes covering the basics of Biology.',
-        url: EconIcon,
-        price: 15,
-        categoryCode: 'BIO101',
-    },
-    {
-        _id: '2',
-        fk_account_owner: 'user2',
-        title: 'Chemistry 101 Notes',
-        description: 'Detailed notes on Chemistry principles and reactions.',
-        url: EconIcon,
-        price: 20,
-        categoryCode: 'CHE101',
-    },
-    {
-        _id: '3',
-        fk_account_owner: 'user3',
-        title: 'Physics 101 Notes',
-        description:
-            'Essential Physics notes focusing on mechanics and motion.',
-        url: EconIcon,
-        price: 10,
-        categoryCode: 'PHY101',
-    },
-    {
-        _id: '4',
-        fk_account_owner: 'user4',
-        title: 'Math 101 Notes',
-        description: 'Mathematics notes including algebra and calculus basics.',
-        url: EconIcon,
-        price: 25,
-        categoryCode: 'MTH101',
-    },
-    {
-        _id: '5',
-        fk_account_owner: 'user5',
-        title: 'History 101 Notes',
-        description: 'Historical events and timelines for major world events.',
-        url: EconIcon,
-        price: 18,
-        categoryCode: 'HIS101',
-    },
-    {
-        _id: '6',
-        fk_account_owner: 'user6',
-        title: 'English 101 Notes',
-        description: 'Notes covering grammar, literature, and essay writing.',
-        url: EconIcon,
-        price: 22,
-        categoryCode: 'ENG101',
-    },
-]
+// const notesList: Notes[] = [
+//     {
+//         _id: '1',
+//         fk_account_owner: 'user1',
+//         title: 'Biology 101 Notes',
+//         description: 'Comprehensive notes covering the basics of Biology.',
+//         url: EconIcon,
+//         price: 15,
+//         categoryCode: 'BIO101',
+//     },
+//     {
+//         _id: '2',
+//         fk_account_owner: 'user2',
+//         title: 'Chemistry 101 Notes',
+//         description: 'Detailed notes on Chemistry principles and reactions.',
+//         url: EconIcon,
+//         price: 20,
+//         categoryCode: 'CHE101',
+//     },
+//     {
+//         _id: '3',
+//         fk_account_owner: 'user3',
+//         title: 'Physics 101 Notes',
+//         description:
+//             'Essential Physics notes focusing on mechanics and motion.',
+//         url: EconIcon,
+//         price: 10,
+//         categoryCode: 'PHY101',
+//     },
+//     {
+//         _id: '4',
+//         fk_account_owner: 'user4',
+//         title: 'Math 101 Notes',
+//         description: 'Mathematics notes including algebra and calculus basics.',
+//         url: EconIcon,
+//         price: 25,
+//         categoryCode: 'MTH101',
+//     },
+//     {
+//         _id: '5',
+//         fk_account_owner: 'user5',
+//         title: 'History 101 Notes',
+//         description: 'Historical events and timelines for major world events.',
+//         url: EconIcon,
+//         price: 18,
+//         categoryCode: 'HIS101',
+//     },
+//     {
+//         _id: '6',
+//         fk_account_owner: 'user6',
+//         title: 'English 101 Notes',
+//         description: 'Notes covering grammar, literature, and essay writing.',
+//         url: EconIcon,
+//         price: 22,
+//         categoryCode: 'ENG101',
+//     },
+// ]
 
 const Explore = () => {
+    const {getParam} = useSearchParamsHandler({page:'1'})
     const [searchTerm, setSearchTerm] = useState('')
     const [sortBy, setSortBy] = useState('priceLowToHigh')
     const [selectedSubject, setSelectedSubject] = useState('All')
     const navigate = useNavigate()
-    const filteredNotes = notesList
-        .filter(
-            (note) =>
-                note.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                (selectedSubject === 'All' ||
-                    note.categoryCode === selectedSubject)
-        )
-        .sort((a, b) => {
-            if (sortBy === 'priceLowToHigh') return a.price - b.price
-            if (sortBy === 'priceHighToLow') return b.price - a.price
-            return 0
-        })
+
+    const {data, isLoading,error} = useQuery({
+        queryKey:['accNotes'],
+        queryFn: () => getAllVerifiedNotes(`${Number(getParam(`page`))-1}`,'8')
+    })
+    if (isLoading) {
+        return <Loader></Loader>
+    }
+
+    const noteData = data.response
+    const filteredNotes = noteData
+    .filter(
+        (note : Notes) =>
+            note.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (selectedSubject === 'All' ||
+                note.categoryCode === selectedSubject)
+    )
+    .sort((a:Notes, b:Notes) => {
+        if (sortBy === 'priceLowToHigh') return a.price - b.price
+        if (sortBy === 'priceHighToLow') return b.price - a.price
+        return 0
+    })
 
     const onClickHandler = (id: string) => {
         navigate(`/note/${id}`)
     }
+
     return (
         <div className="">
             <h1 className="text-3xl font-bold mb-8"> Marketplace</h1>
@@ -221,7 +238,7 @@ const Explore = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                {filteredNotes.map((note) => (
+                {filteredNotes.map((note: Notes) => (
                     <Card key={note._id} className="flex flex-col transform hover:scale-110 transition duration-200">
                         <CardHeader>
                             <CardTitle className="text-xl">
@@ -243,11 +260,11 @@ const Explore = () => {
                                     variant="outline"
                                     className="bg-background_white"
                                 >
-                                    {note.categoryCode}
+                                {note.categoryCode}
                                 </Badge>
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold text-base">
-                                        ${note.price.toFixed(2)}
+                                        ${convertCentsToDollar(note.price)}
                                     </span>
                                 </div>
                             </div>
@@ -266,22 +283,14 @@ const Explore = () => {
                     </Card>
                 ))}
             </div>
-            <Pagination>
-                <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious href="#" />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationNext href="#" />
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
+            <PaginationMINE
+                currentPage={Number(getParam('page'))}
+                totalPages={data.totalPages}
+                maxPagesToShow={4}
+                onPageChange= {()=>{}}
+                onPageNext= {()=>{}}
+                onPagePrevious={()=>{}}
+            ></PaginationMINE>
 
         </div>
     )
