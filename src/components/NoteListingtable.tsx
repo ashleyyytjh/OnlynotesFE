@@ -4,67 +4,78 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 import { Notes } from '@/types/types'
 import EconIcon from '../assets/econs.png'
 import { useNavigate } from 'react-router-dom'
+import { getNotesFromAccountId } from '@/services/NotesService'
+import { useQuery } from '@tanstack/react-query'
+import { convertCentsToDollar } from '@/util/util'
+import Loader from './Loader'
 
-const notesList: Notes[] = [
-    {
-        _id: '1',
-        fk_account_owner: 'user1',
-        title: 'Biology 101 Notes',
-        description: 'Comprehensive notes covering the basics of Biology.',
-        url: EconIcon,
-        price: 15,
-        categoryCode: 'BIO101',
-    },
-    {
-        _id: '2',
-        fk_account_owner: 'user2',
-        title: 'Chemistry 101 Notes',
-        description: 'Detailed notes on Chemistry principles and reactions.',
-        url: EconIcon,
-        price: 20,
-        categoryCode: 'CHE101',
-    },
-    {
-        _id: '3',
-        fk_account_owner: 'user3',
-        title: 'Physics 101 Notes',
-        description:
-            'Essential Physics notes focusing on mechanics and motion.',
-        url: EconIcon,
-        price: 10,
-        categoryCode: 'PHY101',
-    },
-    {
-        _id: '4',
-        fk_account_owner: 'user4',
-        title: 'Math 101 Notes',
-        description: 'Mathematics notes including algebra and calculus basics.',
-        url: EconIcon,
-        price: 25,
-        categoryCode: 'MTH101',
-    },
-    {
-        _id: '5',
-        fk_account_owner: 'user5',
-        title: 'History 101 Notes',
-        description: 'Historical events and timelines for major world events.',
-        url: EconIcon,
-        price: 18,
-        categoryCode: 'HIS101',
-    },
-    {
-        _id: '6',
-        fk_account_owner: 'user6',
-        title: 'English 101 Notes',
-        description: 'Notes covering grammar, literature, and essay writing.',
-        url: EconIcon,
-        price: 22,
-        categoryCode: 'ENG101',
-    },
-]
+// const notesList: Notes[] = [
+//     {
+//         _id: '1',
+//         fk_account_owner: 'user1',
+//         title: 'Biology 101 Notes',
+//         description: 'Comprehensive notes covering the basics of Biology.',
+//         url: EconIcon,
+//         price: 15,
+//         categoryCode: 'BIO101',
+//     },
+//     {
+//         _id: '2',
+//         fk_account_owner: 'user2',
+//         title: 'Chemistry 101 Notes',
+//         description: 'Detailed notes on Chemistry principles and reactions.',
+//         url: EconIcon,
+//         price: 20,
+//         categoryCode: 'CHE101',
+//     },
+//     {
+//         _id: '3',
+//         fk_account_owner: 'user3',
+//         title: 'Physics 101 Notes',
+//         description:
+//             'Essential Physics notes focusing on mechanics and motion.',
+//         url: EconIcon,
+//         price: 10,
+//         categoryCode: 'PHY101',
+//     },
+//     {
+//         _id: '4',
+//         fk_account_owner: 'user4',
+//         title: 'Math 101 Notes',
+//         description: 'Mathematics notes including algebra and calculus basics.',
+//         url: EconIcon,
+//         price: 25,
+//         categoryCode: 'MTH101',
+//     },
+//     {
+//         _id: '5',
+//         fk_account_owner: 'user5',
+//         title: 'History 101 Notes',
+//         description: 'Historical events and timelines for major world events.',
+//         url: EconIcon,
+//         price: 18,
+//         categoryCode: 'HIS101',
+//     },
+//     {
+//         _id: '6',
+//         fk_account_owner: 'user6',
+//         title: 'English 101 Notes',
+//         description: 'Notes covering grammar, literature, and essay writing.',
+//         url: EconIcon,
+//         price: 22,
+//         categoryCode: 'ENG101',
+//     },
+// ]
 const NoteListingTable = () =>{
     const navigate =  useNavigate();
-
+    const {data, isLoading,error} = useQuery({
+      queryKey:['accNotes'],
+      queryFn: () => getNotesFromAccountId()
+  })
+  if (isLoading) {
+    return <Loader></Loader>
+  }
+  console.log(data);
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = 7
 
@@ -80,7 +91,7 @@ const NoteListingTable = () =>{
           </TableRow>
         </TableHeader>
         <TableBody>
-          {notesList.map((order, index) => (
+          {data.response.map((order : Notes, index : number) => (
             <TableRow key={order._id} className={`${index % 2 === 0 ? '' : ''} cursor-pointer`} >
               <TableCell className="font-medium">
                 <div className="flex items-center space-x-4">
@@ -88,20 +99,23 @@ const NoteListingTable = () =>{
                     <AvatarImage src={order.avatar} alt={order.product} />
                     <AvatarFallback>{order.product[0]}</AvatarFallback>
                   </Avatar> */}
-                  <span className='hover:underline' onClick={() => navigate(`/note/${order._id}`)}>{order.title}</span>
+                  <div onClick={() => navigate(`/note/${order._id}`)}>
+                    {order.title}
+                  </div>
                 </div>
               </TableCell>
-              <TableCell className="">{order._id}</TableCell>
-              <TableCell>${order.price}</TableCell>
-              <TableCell>{order.description}</TableCell>
-
-              {/* <TableCell>
+              <TableCell>
                 <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                   order.status === 'Verified' ? 'bg-gray-200 text-gray-800' : 'bg-orange-500 text-white'
                 }`}>
                   {order.status}
                 </span>
-              </TableCell> */}
+              </TableCell>
+              <TableCell className="">{order._id}</TableCell>
+              <TableCell>${convertCentsToDollar(order.price)}</TableCell>
+              <TableCell>{order.description}</TableCell>
+
+     
             </TableRow>
           ))}
         </TableBody>

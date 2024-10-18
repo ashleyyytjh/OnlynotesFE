@@ -3,6 +3,7 @@ import { logout, refreshToken } from './AuthService.tsx'
 import { NavigateFunction } from 'react-router-dom'
 
 const localHostUrl = 'http://localhost:3000'
+
 const api = axios.create({
     baseURL: localHostUrl,
     withCredentials: true,

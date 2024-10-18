@@ -10,6 +10,7 @@ export type Notes = {
     url: string //s3 bucket
     price: number
     categoryCode: string
+    status:string
 }
 
 export type Account = {

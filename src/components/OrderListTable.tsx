@@ -4,46 +4,19 @@ import {  Order } from '@/types/types'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query';
 import { getOrders } from "@/services/OrdersService";
+import { convertCentsToDollar } from "@/util/util";
+import Loader from "./Loader";
 
-const orderList : Order[] = [
-    {
-        _id: "66efbf435eda2af84ed86d92",
-        stripeTransactionId: "pi_3Q1jh9DkLPcWi5RD0sp7ToNP",
-        noteId: "222",
-        buyerId: "1",
-        orderStatus: "processing",
-        orderPrice: 2000,
-        // "__v": 0
-    },
-    {
-        _id: "66efbf435eda2af84ed86d92",
-        stripeTransactionId: "pi_3Q1jh9DkLPcWi5RD0sp7ToNP",
-        noteId: "32",
-        buyerId: "1",
-        orderStatus: "processing",
-        orderPrice: 200,
-        // "__v": 0
-    },
-    {
-        _id: "66efbf435eda2af84ed86d92",
-        stripeTransactionId: "pi_3Q1jh9DkLPcWi5RD0sp7ToNP",
-        noteId: "212",
-        buyerId: "1",
-        orderStatus: "processing",
-        orderPrice: 20,
-        // "__v": 0
-    },
-]
 const OrderListingTable = () =>{
     const navigate =  useNavigate();
 
     const userId = 1
     const { data: orders, error, isLoading } = useQuery<Order[], Error>({
         queryKey: ['orders', userId],
-        queryFn: () => getOrders(1),
+        queryFn: () => getOrders(123456),
     })
-
-    if (isLoading) return <div>Loading...</div>;
+    console.log()
+    if (isLoading) return <Loader/>;
     if (error) return <div>Error retrieving orders. Please refresh and try again </div>;
 
   return (
@@ -53,8 +26,8 @@ const OrderListingTable = () =>{
           <TableRow>
             <TableHead>Order ID</TableHead>
             <TableHead>Notes ID</TableHead>
-            <TableHead>Price</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead>Price</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -62,8 +35,6 @@ const OrderListingTable = () =>{
             <TableRow key={order._id} className={`${index % 2 === 0 ? '' : ''} cursor-pointer`} >
               <TableCell className="">{order._id}</TableCell>
               <TableCell className="">{order.noteId}</TableCell>
-              <TableCell>${order.orderPrice}</TableCell>
-
               <TableCell>
                 <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                   order.orderStatus !== 'successful' ? 'bg-gray-200 text-gray-800' : 'bg-orange-500 text-white'
@@ -71,6 +42,8 @@ const OrderListingTable = () =>{
                   {order.orderStatus.toLocaleUpperCase()}
                 </span>
               </TableCell>
+              <TableCell>${convertCentsToDollar(order.orderPrice)}</TableCell>
+       
             </TableRow>
           ))}
         </TableBody>

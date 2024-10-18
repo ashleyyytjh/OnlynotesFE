@@ -63,8 +63,10 @@ const AccountSettings = () => {
             <div className="flex flex-col md:flex-row gap-8">
                 <aside className="w-full md:w-1/4 border-r-2">
                     <nav className="space-y-1">
-                        { navItems.map((item)=>(
-                                <a href={`#${item.toLocaleLowerCase().replace(' ','-')}`} className={`block px-4 py-2 ${hash === item.toLocaleLowerCase().replace(' ','-') ? 'bg-gray-100' : ''} text-gray-900 rounded`}> {item} </a>
+                        { navItems.map((item,index)=>(
+                                <a 
+                                key={index}
+                                href={`#${item.toLocaleLowerCase().replace(' ','-')}`} className={`block px-4 py-2 ${hash === item.toLocaleLowerCase().replace(' ','-') ? 'bg-gray-100' : ''} text-gray-900 rounded`}> {item} </a>
                             ))
                         }                    
                     </nav>

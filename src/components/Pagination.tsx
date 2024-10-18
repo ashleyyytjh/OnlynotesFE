@@ -7,10 +7,12 @@ type Props = {
     onPagePrevious: (page:number) => void;
 }
 
-const Pagination : React.FC<Props> = (props:Props) => {
+const PaginationMINE : React.FC<Props> = (props:Props) => {
     
     const pagesToShow = generatePagination(props.currentPage, props.totalPages, 3);
-
+    if (props.totalPages === 1) {
+        return 
+    }
     return (
         <div className="flex justify-center items-center mt-8 text-primary_text w-full">
             <nav className="relative z-0 inline-flex rounded-md ">
@@ -44,7 +46,7 @@ const Pagination : React.FC<Props> = (props:Props) => {
     )
 }
 
-export default Pagination;
+export default PaginationMINE;
 
 
 function generatePagination(currentPage: number, totalPages: number, maxPagesToShow: number): number[] {
