@@ -52,8 +52,17 @@ export default function CreateNotesListing() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
+    const formData = new FormData();
+  
+    // Append form values to the FormData object
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("price", values.price.toString());  // Convert number to string
+    formData.append("categoryCode", values.categoryCode);
+    formData.append("file", values.pdfFile);  // Append the file
+
     setTimeout(async() => {
-      const data = await createNotes(form);
+      const data = await createNotes(formData);
       if (data.status === 200) {
         console.log('successfully created');
       } 
