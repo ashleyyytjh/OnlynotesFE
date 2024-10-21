@@ -9,81 +9,30 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getAllVerifiedNotes } from '@/services/NotesService'
 import Loader from '@/components/Loader'
-const notesList: Notes[] = [
-    {
-        _id: '1',
-        fk_account_owner: 'user1',
-        title: 'Biology 101 Notes',
-        description: 'Comprehensive notes covering the basics of Biology.',
-        url: EconIcon,
-        price: 15,
-        categoryCode: 'BIO101',
-        status:'verified'
-    },
-    {
-        _id: '2',
-        fk_account_owner: 'user2',
-        title: 'Chemistry 101 Notes',
-        description: 'Detailed notes on Chemistry principles and reactions.',
-        url: EconIcon,
-        price: 20,
-        categoryCode: 'CHE101',
-        status:'verified'
-
-    },
-    {
-        _id: '3',
-        fk_account_owner: 'user3',
-        title: 'Physics 101 Notes',
-        description:
-            'Essential Physics notes focusing on mechanics and motion.',
-        url: EconIcon,
-        price: 10,
-        categoryCode: 'PHY101',
-        status:'verified'
-
-    },
-    {
-        _id: '4',
-        fk_account_owner: 'user4',
-        title: 'Math 101 Notes',
-        description: 'Mathematics notes including algebra and calculus basics.',
-        url: EconIcon,
-        price: 25,
-        categoryCode: 'MTH101',
-        status:'verified'
-
-    },
-    {
-        _id: '5',
-        fk_account_owner: 'user5',
-        title: 'History 101 Notes',
-        description: 'Historical events and timelines for major world events.',
-        url: EconIcon,
-        price: 18,
-        categoryCode: 'HIS101',
-        status:'verified'
-
-    },
-    {
-        _id: '6',
-        fk_account_owner: 'user6',
-        title: 'English 101 Notes',
-        description: 'Notes covering grammar, literature, and essay writing.',
-        url: EconIcon,
-        price: 22,
-        categoryCode: 'ENG101',
-        status:'verified'
-
-    },
-]
+import {randomImg } from '@/assets/randomImg'
+import { useEffect, useState } from 'react'
 
 const Home = () => {
     const navigate = useNavigate();
+    const [images, setImages] = useState([]); // State to store an array of image URLs
+    const imgData:any[]= randomImg
+    // useEffect(() => {
+    //   // Function to fetch random images for each item in the array
+    //   const fetchImages = async () => {
+    //     const imgPromises = data.map(async () => {
+    //       const img = await getRandomImg(); // Fetch image for each item
+    //       return img;
+    //     });
+    //     const imgResults = await Promise.all(imgPromises); // Resolve all promises
+    //     setImages(imgResults); // Set state with the array of images
+    //   };
+  
+    //   fetchImages();
+    // }, []);
 
     const {data, isLoading, error} = useQuery({
         queryKey:['notesData'],
-        queryFn: () => getAllVerifiedNotes(`0`, `4`)
+        queryFn: () => getAllVerifiedNotes(`0`, `8`)
     })
 
     if (isLoading){
@@ -148,7 +97,7 @@ const Home = () => {
                     Popular study notes
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {notes.map((note) => (
+                    {notes.map((note, index) => (
                         <Card
                             key={note._id}
                             className="transform hover:scale-110 transition duration-200"
@@ -159,7 +108,7 @@ const Home = () => {
                                     alt={note.title}
                                     className="rounded-lg mb-2"
                                     height="100"
-                                    src={EconIcon}
+                                    src={imgData[(index+1)%notes.length]} 
                                     style={{
                                         aspectRatio: '200/100',
                                         objectFit: 'cover',

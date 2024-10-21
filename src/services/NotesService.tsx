@@ -16,7 +16,8 @@ export const getAllVerifiedNotes = async (page: string, limit: string) => {
 export const createNotes = async (notes: any) => {
     try {
         const data = await AxiosInstance.post(`${notesUrl}/notes`, notes);
-        return data.data;
+        console.log('data' , data);
+        return data;
     } catch (error) {
         throw error
     }

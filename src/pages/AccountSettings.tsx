@@ -1,8 +1,4 @@
-import { getSession } from '../services/UserService.tsx'
-import { useEffect, useState } from 'react'
-
 import { logout } from '../services/AuthService.tsx'
-
 
 import {
     Select,
@@ -11,38 +7,20 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Profile from '@/components/Profile.tsx'
 import ProductList from '@/components/ProductList.tsx'
 import OrderListingTable from '@/components/OrderListTable.tsx'
 
-const logoutHandle = async () => {
-    logout().then(() => {
-        window.location.href = import.meta.env.VITE_cognito_logout_url
-        return
-    })
-}
-
 const AccountSettings = () => {
-    const [user, setUser] = useState({ username: '', email: '' })
     const location = useLocation();
-    const hash = location.hash.substring(1);
-
-    useEffect(() => {
-        getSession().then((data) => {
-            console.log(data)
-            setUser(data)
-        })
-
-    
-    }, [])
-
+    const { list } = useParams();
     const component = () => {
-        if (hash === "profile") {
+        if (list === "profile") {
             return <Profile/>
-        } else if (hash === "product-listing") {
+        } else if (list === "product-listing") {
             return <ProductList/>
-        } else if (hash === "orders") {
+        } else if (list === "orders") {
             return <OrderListingTable/>
         } else {
             return <>Select a section to view.</>; 
@@ -53,6 +31,10 @@ const AccountSettings = () => {
         "Product Listing",
         "Orders"
     ]
+    const navigate = useNavigate();
+    const changeSectionHandler = async (name:string) => {
+        navigate(`/account-settings/${name.toLocaleLowerCase().replace(' ','-')}`)
+    }
     return (
         <div>
             <h1 className="text-3xl font-bold mb-2">Settings</h1>
@@ -64,9 +46,10 @@ const AccountSettings = () => {
                 <aside className="w-full md:w-1/4 border-r-2">
                     <nav className="space-y-1">
                         { navItems.map((item,index)=>(
-                                <a 
+                            <a 
                                 key={index}
-                                href={`#${item.toLocaleLowerCase().replace(' ','-')}`} className={`block px-4 py-2 ${hash === item.toLocaleLowerCase().replace(' ','-') ? 'bg-gray-100' : ''} text-gray-900 rounded`}> {item} </a>
+                                onClick = {()=>changeSectionHandler(item)}
+                                className={`block px-4 py-2 ${list === item.toLocaleLowerCase().replace(' ','-') ? 'bg-gray-100' : ''} text-gray-900 rounded`}> {item} </a>
                             ))
                         }                    
                     </nav>

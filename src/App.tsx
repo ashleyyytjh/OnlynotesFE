@@ -39,6 +39,7 @@ function App() {
 
                 {/* Public route for login */}
                 <Route path="/login" element={<Login />} />
+                <Route path="callback" element={<Callback />} />
 
                 {/* Protected routes for other paths */}
                 <Route element={<ProtectedRoute/>}>
@@ -46,7 +47,7 @@ function App() {
                         <Route path='/home' element={<Home />} />
                         <Route path="products/:list" element={<Products />} />
                         <Route
-                            path="account-settings"
+                            path="account-settings/:list"
                             element={<AccountSettings />}
                         />
                         <Route path="market" element={<Explore />}></Route>
@@ -54,7 +55,6 @@ function App() {
                         <Route path="create" element={<CreateNotesListing />} />
                         <Route path="successful-payment" element={<PaymentSuccessful />} />
                         <Route path="payment" element={<Payment />} />
-                        <Route path="callback" element={<Callback />} />
                         <Route path="token" element={<Token />} />
                         <Route path="unsuccessful-payment" element={<PaymentUnsuccessful/>} />
                     </Route>

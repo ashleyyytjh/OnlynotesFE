@@ -8,9 +8,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { createNotes } from '@/services/NotesService'
+import { useToast } from "@/hooks/use-toast"
+import {  useNavigate } from 'react-router-dom'
 
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 500 * 1024 * 1024; // 5MB
 const ACCEPTED_FILE_TYPES = ["application/pdf"];
 
 const formSchema = z.object({
@@ -37,9 +39,10 @@ const formSchema = z.object({
 })
 
 export default function CreateNotesListing() {
+  const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null)
-
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,7 +56,6 @@ export default function CreateNotesListing() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     const formData = new FormData();
-  
     // Append form values to the FormData object
     formData.append("title", values.title);
     formData.append("description", values.description);
@@ -63,14 +65,22 @@ export default function CreateNotesListing() {
 
     setTimeout(async() => {
       const data = await createNotes(formData);
-      if (data.status === 200) {
+      if (data.status === 201) {
         console.log('successfully created');
-      } 
+        toast({
+          title: "Listing created!",
+          description: "Your notes have been successfully listed.",
+        })
+        navigate('/account-settings/product-listing?page=1')
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request. Please refresh and try again",
+        })
+      }
       setIsSubmitting(false)
-      // toast({
-      //   title: "Listing created!",
-      //   description: "Your notes have been successfully listed.",
-      // })
+   
       form.reset()
     }, 2000)
   }

@@ -10,7 +10,7 @@ type Props = {
 const PaginationMINE : React.FC<Props> = (props:Props) => {
     
     const pagesToShow = generatePagination(props.currentPage, props.totalPages, 3);
-    if (props.totalPages === 1) {
+    if (props.totalPages <= 1) {
         return 
     }
     return (

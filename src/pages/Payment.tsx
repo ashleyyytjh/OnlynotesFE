@@ -6,6 +6,7 @@ import Loader from '@/components/Loader.tsx';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getNotesById } from '@/services/NotesService.tsx';
+import { getSession } from '@/services/UserService.tsx';
 
 const Payment = () => {
     const stripePromise = getStripe()
@@ -19,17 +20,16 @@ const Payment = () => {
             try {
                 const id = searchParams.get('id');
                 const data = await getNotesById(`${id}`)
-                console.log("fetched data", data)
+                const userData = await getSession();
                 const tempOrder = {
                     noteId: data.response._id,
-                    buyerId: data.response.fkAccountOwner,
+                    buyerId: userData.id,
                     orderPrice: data.response.price,
                 }
                          
                 await createOrder(tempOrder).then((data) => {
                     console.log('create order data is' , data);
                     if (data.status === 200) {
-
                         const handleMessage = (data : any) => {
                             if (data.error) {
                                 navigate('/unsuccessful-payment')

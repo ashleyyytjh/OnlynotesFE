@@ -45,72 +45,16 @@ import { useQuery } from '@tanstack/react-query'
 import { convertCentsToDollar } from '@/util/util'
 import PaginationMINE from '@/components/Pagination'
 import useSearchParamsHandler from '@/hooks/useSearchParamsHandler'
+import { randomImg } from '@/assets/randomImg'
 
-// const notesList: Notes[] = [
-//     {
-//         _id: '1',
-//         fk_account_owner: 'user1',
-//         title: 'Biology 101 Notes',
-//         description: 'Comprehensive notes covering the basics of Biology.',
-//         url: EconIcon,
-//         price: 15,
-//         categoryCode: 'BIO101',
-//     },
-//     {
-//         _id: '2',
-//         fk_account_owner: 'user2',
-//         title: 'Chemistry 101 Notes',
-//         description: 'Detailed notes on Chemistry principles and reactions.',
-//         url: EconIcon,
-//         price: 20,
-//         categoryCode: 'CHE101',
-//     },
-//     {
-//         _id: '3',
-//         fk_account_owner: 'user3',
-//         title: 'Physics 101 Notes',
-//         description:
-//             'Essential Physics notes focusing on mechanics and motion.',
-//         url: EconIcon,
-//         price: 10,
-//         categoryCode: 'PHY101',
-//     },
-//     {
-//         _id: '4',
-//         fk_account_owner: 'user4',
-//         title: 'Math 101 Notes',
-//         description: 'Mathematics notes including algebra and calculus basics.',
-//         url: EconIcon,
-//         price: 25,
-//         categoryCode: 'MTH101',
-//     },
-//     {
-//         _id: '5',
-//         fk_account_owner: 'user5',
-//         title: 'History 101 Notes',
-//         description: 'Historical events and timelines for major world events.',
-//         url: EconIcon,
-//         price: 18,
-//         categoryCode: 'HIS101',
-//     },
-//     {
-//         _id: '6',
-//         fk_account_owner: 'user6',
-//         title: 'English 101 Notes',
-//         description: 'Notes covering grammar, literature, and essay writing.',
-//         url: EconIcon,
-//         price: 22,
-//         categoryCode: 'ENG101',
-//     },
-// ]
 
 const Explore = () => {
-    const {getParam} = useSearchParamsHandler({page:'1'})
+    const {getParam, setParam} = useSearchParamsHandler({page:'1'})
     const [searchTerm, setSearchTerm] = useState('')
     const [sortBy, setSortBy] = useState('priceLowToHigh')
     const [selectedSubject, setSelectedSubject] = useState('All')
     const navigate = useNavigate()
-
+    const imgData:any[] = randomImg
     const {data, isLoading,error} = useQuery({
         queryKey:['accNotes'],
         queryFn: () => getAllVerifiedNotes(`${Number(getParam(`page`))-1}`,'8')
@@ -118,21 +62,23 @@ const Explore = () => {
     if (isLoading) {
         return <Loader></Loader>
     }
-
+    const setPageNextHandler = (page :number) => {
+        setParam('page',page+1);
+    }
     const noteData = data.response
+
     const filteredNotes = noteData
-    .filter(
-        (note : Notes) =>
-            note.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            (selectedSubject === 'All' ||
-                note.categoryCode === selectedSubject)
-    )
+    
     .sort((a:Notes, b:Notes) => {
         if (sortBy === 'priceLowToHigh') return a.price - b.price
         if (sortBy === 'priceHighToLow') return b.price - a.price
         return 0
     })
-
+    // .filter()
+    // (note : Notes) =>
+    //     note.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    //     (selectedSubject === 'All' ||
+    //         note.categoryCode === selectedSubject)
     const onClickHandler = (id: string) => {
         navigate(`/note/${id}`)
     }
@@ -238,7 +184,7 @@ const Explore = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                {filteredNotes.map((note: Notes) => (
+                {filteredNotes.map((note: Notes, index: number) => (
                     <Card key={note._id} className="flex flex-col transform hover:scale-110 transition duration-200">
                         <CardHeader>
                             <CardTitle className="text-xl">
@@ -247,11 +193,11 @@ const Explore = () => {
                         </CardHeader>
                         <CardContent>
                             <img
-                                src={note.url}
+                                src={imgData[(index+1) % imgData.length]}
                                 alt={'image'}
                                 className="w-full h-fit object-cover rounded-md mb-4"
                                 style={{
-                                    aspectRatio: '200/100',
+                                    aspectRatio: '300/200',
                                     objectFit: 'cover',
                                 }}
                             />
@@ -288,8 +234,8 @@ const Explore = () => {
                 totalPages={data.totalPages}
                 maxPagesToShow={4}
                 onPageChange= {()=>{}}
-                onPageNext= {()=>{}}
-                onPagePrevious={()=>{}}
+                onPageNext= {setPageNextHandler}
+                onPagePrevious={()=>{ setParam('page',3)}}
             ></PaginationMINE>
 
         </div>

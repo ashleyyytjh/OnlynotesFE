@@ -1,12 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store.ts'
 
 type authState = {
     authenticated: boolean
+    id: string,
+    username:string,
+    email:string
+}
+type AuthPayload = {
+    id: string,
+    username:string,
+    email:string
 }
 
 const initialState: authState = {
     authenticated: false,
+    id: "",
+    username:"",
+    email:""
 }
 
 export const authenticationSlice = createSlice({
@@ -19,8 +30,12 @@ export const authenticationSlice = createSlice({
         logout: (state) => {
             state.authenticated = false
         },
-        logIn: (state) => {
-            state.authenticated = true
+
+        logIn: (state, action : PayloadAction<AuthPayload>) => {
+            state.authenticated = true;
+            state.id = action.payload.id;
+            state.username = action.payload.username;
+            state.email = action.payload.email;
         },
     },
 })

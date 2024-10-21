@@ -8,77 +8,20 @@ import { getNotesFromAccountId } from '@/services/NotesService'
 import { useQuery } from '@tanstack/react-query'
 import { convertCentsToDollar } from '@/util/util'
 import Loader from './Loader'
+import PaginationMINE from './Pagination'
+import useSearchParamsHandler from '@/hooks/useSearchParamsHandler'
 
-// const notesList: Notes[] = [
-//     {
-//         _id: '1',
-//         fk_account_owner: 'user1',
-//         title: 'Biology 101 Notes',
-//         description: 'Comprehensive notes covering the basics of Biology.',
-//         url: EconIcon,
-//         price: 15,
-//         categoryCode: 'BIO101',
-//     },
-//     {
-//         _id: '2',
-//         fk_account_owner: 'user2',
-//         title: 'Chemistry 101 Notes',
-//         description: 'Detailed notes on Chemistry principles and reactions.',
-//         url: EconIcon,
-//         price: 20,
-//         categoryCode: 'CHE101',
-//     },
-//     {
-//         _id: '3',
-//         fk_account_owner: 'user3',
-//         title: 'Physics 101 Notes',
-//         description:
-//             'Essential Physics notes focusing on mechanics and motion.',
-//         url: EconIcon,
-//         price: 10,
-//         categoryCode: 'PHY101',
-//     },
-//     {
-//         _id: '4',
-//         fk_account_owner: 'user4',
-//         title: 'Math 101 Notes',
-//         description: 'Mathematics notes including algebra and calculus basics.',
-//         url: EconIcon,
-//         price: 25,
-//         categoryCode: 'MTH101',
-//     },
-//     {
-//         _id: '5',
-//         fk_account_owner: 'user5',
-//         title: 'History 101 Notes',
-//         description: 'Historical events and timelines for major world events.',
-//         url: EconIcon,
-//         price: 18,
-//         categoryCode: 'HIS101',
-//     },
-//     {
-//         _id: '6',
-//         fk_account_owner: 'user6',
-//         title: 'English 101 Notes',
-//         description: 'Notes covering grammar, literature, and essay writing.',
-//         url: EconIcon,
-//         price: 22,
-//         categoryCode: 'ENG101',
-//     },
-// ]
 const NoteListingTable = () =>{
+    const {getParam,setParam} = useSearchParamsHandler({page:'1'})
     const navigate =  useNavigate();
     const {data, isLoading,error} = useQuery({
-      queryKey:['accNotes'],
-      queryFn: () => getNotesFromAccountId()
-  })
+        queryKey:['accNotes'],
+        queryFn: () => getNotesFromAccountId()
+    })
   if (isLoading) {
     return <Loader></Loader>
   }
   console.log(data);
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPages = 7
-
   return (
     <div className='mt-10 pt-5 rounded-2xl shadow'>
       <Table>
@@ -122,22 +65,14 @@ const NoteListingTable = () =>{
       </Table>
 
       <div className="flex items-center justify-end space-x-2 py-4">
-      <Pagination>
-            <PaginationContent>
-                <PaginationItem>
-                    <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationNext href="#product-listing" />
-                </PaginationItem>
-            </PaginationContent>
-        </Pagination>
+      <PaginationMINE
+                currentPage={Number(getParam('page'))}
+                totalPages={data.totalPages}
+                maxPagesToShow={4}
+                onPageChange= {()=>{}}
+                onPageNext= {()=>{setParam('page', `${Number(getParam('page'))+1,'#product-listing'}`)}}
+                onPagePrevious={()=>{}}
+            ></PaginationMINE>  
       </div>
     </div>
   )

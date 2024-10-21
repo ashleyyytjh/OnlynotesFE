@@ -61,7 +61,7 @@ const Header = () => {
                 <CircleUserRound 
                     strokeWidth={1} 
                     className=' w-10  h-fit' 
-                    onClick={() => navigate('/account-settings#profile')}
+                    onClick={() => navigate('/account-settings/profile')}
                 />
                 <Button variant='ghost' onClick={() => logOutHandler()}> Logout </Button>
             </div>
