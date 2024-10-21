@@ -1,6 +1,7 @@
 stages:
   - test
   - stage
+  - production
 
 variables:
   AWS_ACCESS_KEY_ID: "<YOUR_AWS_ACCESS_KEY_ID>"
@@ -30,6 +31,22 @@ stage:
   - git push "https://CD-staging:${GITLAB_TOKEN}@gitlab.com//${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git" staging
   only:
     - main
+
+
+production:
+  stage: production
+  script:
+  - git config --global user.name "CICD"
+  - git config --global user.email "CICD@example.com"
+  - git fetch --all
+  - echo "$GITLAB_TOKEN"
+  - git checkout production
+  - git merge origin/main
+  - git push "https://CD-staging:${GITLAB_TOKEN}@gitlab.com//${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git" staging
+  when: manual
+  only:
+    - main
+
 
 #TEST
 #release:
