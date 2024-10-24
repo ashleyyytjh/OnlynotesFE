@@ -6,15 +6,28 @@ import { useQuery } from '@tanstack/react-query';
 import { getOrders } from "@/services/OrdersService";
 import { convertCentsToDollar } from "@/util/util";
 import Loader from "./Loader";
+import { useEffect, useState } from "react";
+import { getSession } from "@/services/UserService";
 
 const OrderListingTable = () =>{
+  useEffect(() => {
+    getSession().then((data) => {
+        setId(data.id)
+    })
+}, [])
     const navigate =  useNavigate();
 
     const userId = 1
+     
     const { data: orders, error, isLoading } = useQuery<Order[], Error>({
         queryKey: ['orders', userId],
-        queryFn: () => getOrders(123456),
+        queryFn: () => getOrders(id),
     })
+
+    const [id, setId] = useState<number>()
+
+ 
+
     console.log()
     if (isLoading) return <Loader/>;
     if (error) return <div>Error retrieving orders. Please refresh and try again </div>;

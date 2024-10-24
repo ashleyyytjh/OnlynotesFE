@@ -14,7 +14,7 @@ const PaymentSuccessful = () => {
         <h1 className="text-3xl font-bold mb-2">Payment Successful!</h1>
         <p className="text-gray-600">Thank you for your purchase. Your order will be processed.</p>
         <p className="text-gray-600">Check your orders to see the status</p>
-        <Button className="mt-4" onClick={() => navigate('/account-settings#orders')}> Go to Orders </Button>
+        <Button className="mt-4" onClick={() => navigate('/account-settings/orders')}> Go to Orders </Button>
 
       </div>
 

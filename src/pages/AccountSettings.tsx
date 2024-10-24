@@ -49,7 +49,7 @@ const AccountSettings = () => {
                             <a 
                                 key={index}
                                 onClick = {()=>changeSectionHandler(item)}
-                                className={`block px-4 py-2 ${list === item.toLocaleLowerCase().replace(' ','-') ? 'bg-gray-100' : ''} text-gray-900 rounded`}> {item} </a>
+                                className={`cursor-pointer block px-4 py-2 ${list === item.toLocaleLowerCase().replace(' ','-') ? 'bg-gray-100' : ''} text-gray-900 rounded`}> {item} </a>
                             ))
                         }                    
                     </nav>

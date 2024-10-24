@@ -14,14 +14,13 @@ const Callback = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-               
                 await codeExchange(code)
                 .then((response) => {
                     console.log(response.toString())
                 })
-                navigate('/home')
+                navigate ("/home")
             } catch (error) {
-                navigate(import.meta.env.VITE_cognito_url);
+                window.location.href = import.meta.env.VITE_cognito_url;
             }
            
         }

@@ -18,9 +18,10 @@ export const getOrders = async (id: any) => {
     }
 }
 
+const API_URL = import.meta.env.VITE_WEBSOCKET_URL;
 export const orderWebhook = (id: any, onMessage: (data: any) => void) => {
     console.log(id);
-    const socket = new WebSocket(`ws://localhost:3000/orders/${id}`);
+    const socket = new WebSocket(`${API_URL}/orders/${id}`);
 
     socket.onopen = () => {
         console.log('WebSocket connection established');

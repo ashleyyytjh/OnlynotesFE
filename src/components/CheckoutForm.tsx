@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getNotesById } from "@/services/NotesService";
 import Loader from "./Loader";
 import { convertCentsToDollar } from "@/util/util";
+import { randomImg } from "@/assets/randomImg";
 interface Props {
     clientSecret: string
 }
@@ -101,7 +102,7 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
                     </CardHeader>
                     <CardContent className="">
                     <img
-                        src={item.url}
+                        src={randomImg[Math.floor(Math.random() * randomImg.length)]}
                         alt="Preview Of Notes"
                         className="w-96 h-auto rounded-lg shadow-lg"
                         />

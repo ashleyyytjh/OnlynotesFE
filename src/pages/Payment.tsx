@@ -49,15 +49,12 @@ const Payment = () => {
                 })
                
             } catch (error) {
-                // navigate('/unsuccessful-payment')
-
+                navigate('/unsuccessful-payment')
             }
-         
-         
-   
         }
        fetchData()
     }, []);
+    
     const appearance = {
         theme: 'flat',
         labels: 'floating',

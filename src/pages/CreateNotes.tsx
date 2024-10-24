@@ -12,14 +12,14 @@ import { useToast } from "@/hooks/use-toast"
 import {  useNavigate } from 'react-router-dom'
 
 
-const MAX_FILE_SIZE = 500 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB
 const ACCEPTED_FILE_TYPES = ["application/pdf"];
 
 const formSchema = z.object({
   title: z.string().min(5, {
     message: "Title must be at least 5 characters.",
   }),
-  description: z.string().min(20, {
+  description: z.string().min(0, {
     message: "Description must be at least 20 characters.",
   }),
   price: z.number().min(0.01, {
@@ -64,15 +64,23 @@ export default function CreateNotesListing() {
     formData.append("file", values.pdfFile);  // Append the file
 
     setTimeout(async() => {
-      const data = await createNotes(formData);
-      if (data.status === 201) {
-        console.log('successfully created');
-        toast({
-          title: "Listing created!",
-          description: "Your notes have been successfully listed.",
-        })
-        navigate('/account-settings/product-listing?page=1')
-      } else {
+      try {
+        const data = await createNotes(formData);
+        if (data.status === 201) {
+          console.log('successfully created');
+          toast({
+            title: "Listing created!",
+            description: "Your notes have been successfully listed.",
+          })
+          navigate('/account-settings/product-listing?page=1')
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request. Please refresh and try again",
+          })
+        }
+      } catch (error) {
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",

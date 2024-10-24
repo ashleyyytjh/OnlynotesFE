@@ -32,7 +32,7 @@ const Home = () => {
 
     const {data, isLoading, error} = useQuery({
         queryKey:['notesData'],
-        queryFn: () => getAllVerifiedNotes(`0`, `8`)
+        queryFn: () => getAllVerifiedNotes(`0`, `6`)
     })
 
     if (isLoading){
@@ -108,7 +108,7 @@ const Home = () => {
                                     alt={note.title}
                                     className="rounded-lg mb-2"
                                     height="100"
-                                    src={imgData[(index+1)%notes.length]} 
+                                    src={imgData[(index+1)%imgData.length]} 
                                     style={{
                                         aspectRatio: '200/100',
                                         objectFit: 'cover',
@@ -168,7 +168,7 @@ const Home = () => {
                                     alt={note.title}
                                     className="rounded-lg mb-2"
                                     height="100"
-                                    src={note.url}
+                                    src={randomImg[Math.floor(Math.random() * randomImg.length)]}
                                     style={{
                                         aspectRatio: '200/100',
                                         objectFit: 'cover',

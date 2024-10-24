@@ -28,6 +28,7 @@ const NoteListingTable = () =>{
         <TableHeader>
           <TableRow>
             <TableHead className="w-[300px]">Name</TableHead>
+            <TableHead> Status </TableHead>
             <TableHead>ID</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Description</TableHead>

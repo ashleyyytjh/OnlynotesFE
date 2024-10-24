@@ -1,11 +1,9 @@
 import AxiosInstance from './AxiosInstance.ts'
-
-const notesUrl = 'http://localhost:8080/api/v1'
 const limit = 8
 
 export const getAllVerifiedNotes = async (page: string, limit: string) => {
     try {
-        const data = await AxiosInstance.get(`${notesUrl}/notes?page=${page}&limit=${limit}`);
+        const data = await AxiosInstance.get(`/notes?page=${page}&limit=${limit}`);
         console.log('test', data);
         return data.data;
     } catch (error) {
@@ -15,7 +13,7 @@ export const getAllVerifiedNotes = async (page: string, limit: string) => {
 
 export const createNotes = async (notes: any) => {
     try {
-        const data = await AxiosInstance.post(`${notesUrl}/notes`, notes);
+        const data = await AxiosInstance.post(`/notes`, notes);
         console.log('data' , data);
         return data;
     } catch (error) {
@@ -25,7 +23,7 @@ export const createNotes = async (notes: any) => {
 
 export const getNotesById = async (id: string) => {
     try {
-        const data = await AxiosInstance.get(`${notesUrl}/notes/${id}`)
+        const data = await AxiosInstance.get(`/notes/${id}`)
         return data.data
     } catch (error) {
         throw error
@@ -34,7 +32,7 @@ export const getNotesById = async (id: string) => {
 
 export const getAllDistinctCategories = async () => {
     try {
-        const data = await AxiosInstance.get(`${notesUrl}/notes/categories`)
+        const data = await AxiosInstance.get(`/notes/categories`)
         return data.data
     } catch (error) {
         throw error
@@ -43,7 +41,7 @@ export const getAllDistinctCategories = async () => {
 
 export const getNotesFromAccountId = async () => {
     try {
-        const data = await AxiosInstance.get(`${notesUrl}/notes/account`)
+        const data = await AxiosInstance.get(`/notes/account`)
         return data.data
     } catch (error) {
         throw error
@@ -52,7 +50,7 @@ export const getNotesFromAccountId = async () => {
 
 export const getAllVerifiedNotesByCategoryCode = async (catCode : string, page : string) => {
     try {
-        const data = await AxiosInstance.get(`${notesUrl}/notes?categoriyCode=${catCode}?page=${page}&limit=${limit}`)
+        const data = await AxiosInstance.get(`/notes?categoriyCode=${catCode}?page=${page}&limit=${limit}`)
         return data.data
     } catch (error) {
         throw error
