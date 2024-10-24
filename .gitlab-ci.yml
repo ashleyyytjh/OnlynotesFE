@@ -42,7 +42,7 @@ production:
   - echo "$GITLAB_TOKEN"
   - git checkout production
   - git merge origin/main
-  - git push "https://CD-staging:${GITLAB_TOKEN}@gitlab.com//${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git" staging
+  - git push "https://CD-staging:${GITLAB_TOKEN}@gitlab.com//${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git" production
   when: manual
   only:
     - main
