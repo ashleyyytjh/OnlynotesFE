@@ -10,19 +10,18 @@ const Callback = () => {
     const [search, useSearch] = useSearchParams()
     const code = search.get('code') as string
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log('code is ' , code);
                 await codeExchange(code)
                 .then((response) => {
                     console.log(response.toString())
                 })
-                navigate ("/home")
+                navigate ("/home");
             } catch (error) {
                 window.location.href = import.meta.env.VITE_cognito_url;
             }
-           
         }
         fetchData();
     })
