@@ -1,10 +1,8 @@
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { codeExchange } from '../services/AuthService'
-import Home from './Home'
+// import Home from './Home'
 import { useEffect } from 'react'
-import { getSession } from '@/services/UserService'
-import { useDispatch } from 'react-redux'
-import { logIn } from '@/redux/reducer/auth.reducer'
+
 
 const Callback = () => {
     const [search, useSearch] = useSearchParams()
@@ -16,11 +14,12 @@ const Callback = () => {
                 console.log('code is ' , code);
                 await codeExchange(code)
                 .then((response) => {
-                    console.log(response.toString())
+                    console.log('response is ' , response.toString())
                 })
                 navigate ("/home");
             } catch (error) {
-                window.location.href = import.meta.env.VITE_cognito_url;
+                console.log(error);
+                // window.location.href = import.meta.env.VITE_COGNITO_URL;
             }
         }
         fetchData();
