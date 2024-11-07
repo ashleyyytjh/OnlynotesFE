@@ -5,6 +5,7 @@ export const codeExchange = async (code: string) => {
         const response = await AxiosInstance.get(
             '/auth/callback?code=' + code
         )
+        console.log('response is ',     response)
         return response.data
     } catch (error) {
         throw error

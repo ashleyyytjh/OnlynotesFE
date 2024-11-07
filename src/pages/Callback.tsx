@@ -11,14 +11,13 @@ const Callback = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('code is ' , code);
                 await codeExchange(code)
                 .then((response) => {
                     console.log('response is ' , response.toString())
                 })
-                navigate ("/home");
+                navigate("/home");
             } catch (error) {
-                console.log(error);
+                console.log('ERROR IS ' , error);
                 // window.location.href = import.meta.env.VITE_COGNITO_URL;
             }
         }
