@@ -6,8 +6,7 @@ import { Button } from './ui/button'
 import { logout } from '@/services/AuthService'
 import { User, CircleUserRound } from 'lucide-react'
 
-const headerItems : string[] = [
-]
+
 const Header = () => {
     const navigate = useNavigate()
 
