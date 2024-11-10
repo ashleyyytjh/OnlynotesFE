@@ -2,6 +2,7 @@ stages:
   - test
   - stage
   - production
+  - notification 
 
 variables:
   AWS_ACCESS_KEY_ID: "<YOUR_AWS_ACCESS_KEY_ID>"
@@ -61,3 +62,18 @@ production:
 #    - docker build --pull --target production -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" -f ./docker/Dockerfile .
 #    - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA"
 
+success_notification:
+  stage: notification  
+  script:
+    - wget https://raw.githubusercontent.com/DiscordHooks/gitlab-ci-discord-webhook/master/send.sh
+    - chmod +x send.sh
+    - ./send.sh success $DISCORD_WEBHOOK_URL
+  when: on_success
+
+failure_notification:
+  stage: notification  
+  script:
+    - wget https://raw.githubusercontent.com/DiscordHooks/gitlab-ci-discord-webhook/master/send.sh
+    - chmod +x send.sh
+    - ./send.sh failure $DISCORD_WEBHOOK_URL
+  when: on_failure
