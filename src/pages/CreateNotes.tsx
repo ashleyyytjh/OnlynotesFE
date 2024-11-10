@@ -62,7 +62,8 @@ export default function CreateNotesListing() {
     formData.append("price", values.price.toString());  // Convert number to string
     formData.append("categoryCode", values.categoryCode);
     formData.append("file", values.pdfFile);  // Append the file
-
+    
+    console.log(formData)
     setTimeout(async() => {
       try {
         const data = await createNotes(formData);
