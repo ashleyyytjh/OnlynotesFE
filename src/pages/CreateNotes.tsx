@@ -98,6 +98,7 @@ export default function CreateNotesListing() {
       form.reset()
     }, 2000)
   }
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -106,8 +107,8 @@ export default function CreateNotesListing() {
     } else {
       setSelectedFileName('');
     }
-
   }
+  
   return (
     <div className="">
       <h1 className="text-3xl font-bold mb-8 p-2 border-b-2">Create New Notes Listing</h1>

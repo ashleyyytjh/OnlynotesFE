@@ -13,7 +13,11 @@ export const getAllVerifiedNotes = async (page: string, limit: string) => {
 
 export const createNotes = async (notes: FormData) => {
     try {
-        const data = await AxiosInstance.post(`/notes`, notes);
+        const data = await AxiosInstance.post(`/notes`, notes,
+            {
+                headers: {'Content-Type': 'multipart/form-data'}
+              }
+        );
         console.log('data' , data);
         return data;
     } catch (error) {
