@@ -50,6 +50,7 @@ export default function CreateNotesListing() {
       description: "",
       price: 0,
       categoryCode: "",
+      pdfFile: undefined,
     },
   })
 
@@ -62,8 +63,7 @@ export default function CreateNotesListing() {
     formData.append("price", values.price.toString());  // Convert number to string
     formData.append("categoryCode", values.categoryCode);
     formData.append("file", values.pdfFile);  // Append the file
-    
-    console.log(formData)
+    console.log('data is ' , formData.get('file'))
     setTimeout(async() => {
       try {
         const data = await createNotes(formData);
