@@ -64,7 +64,10 @@ export default function CreateNotesListing() {
     formData.append("categoryCode", values.categoryCode);
     formData.append("file", values.pdfFile);  // Append the file
     console.log('data is ' , formData.get('file'))
-    console.log('formData is ' , formData);
+    // console.log('formData is ' , formData);
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
     setTimeout(async() => {
       try {
         const data = await createNotes(formData);
