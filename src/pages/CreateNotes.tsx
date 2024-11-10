@@ -64,6 +64,7 @@ export default function CreateNotesListing() {
     formData.append("categoryCode", values.categoryCode);
     formData.append("file", values.pdfFile);  // Append the file
     console.log('data is ' , formData.get('file'))
+    console.log('formData is ' , formData);
     setTimeout(async() => {
       try {
         const data = await createNotes(formData);
@@ -87,6 +88,7 @@ export default function CreateNotesListing() {
           title: "Uh oh! Something went wrong.",
           description: "There was a problem with your request. Please refresh and try again",
         })
+        console.log(error);
       }
       setIsSubmitting(false)
    

@@ -11,7 +11,7 @@ export const getAllVerifiedNotes = async (page: string, limit: string) => {
     }
 } 
 
-export const createNotes = async (notes: any) => {
+export const createNotes = async (notes: FormData) => {
     try {
         const data = await AxiosInstance.post(`/notes`, notes);
         console.log('data' , data);
