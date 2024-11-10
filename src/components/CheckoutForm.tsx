@@ -38,7 +38,7 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
     const elements = useElements();
     // const [email, setEmail] = useState("");
     const [message, setMessage] = useState<string>("");
-
+    const returnUrl = import.meta.env.VITE_WEBSITE_URL;
     const [isStripeLoading, setIsStripeLoading] = useState(false);
     const clientSecret= props.clientSecret;
     // const route = useRouter();
@@ -71,7 +71,7 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
         }
         setIsStripeLoading(true);
 
-        const returnURL =`http://localhost:5173/successful-payment`;
+        const returnURL =`${returnUrl}/successful-payment`;
 
         const { error } = await stripe.confirmPayment({
             elements,
