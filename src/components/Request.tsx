@@ -1,4 +1,4 @@
-import { getAllUserRequest, subscribeRequest } from "@/services/RequestService";
+import { deleteRequest, getAllUserRequest, subscribeRequest } from "@/services/RequestService";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "./Loader";
 import { Label } from "./ui/label";
@@ -44,11 +44,37 @@ const Request = () => {
               })
         }
     }
+
+    const deleteRequestHandler = async (id: string) => {
+        try {
+          await deleteRequest(id).then((data) => {
+            if (data.status === 200 || data.status === 201) {
+              toast({
+                title: "Deleted!",
+                description: "You have successfully deleted",
+              })
+              refetch();
+            } else {
+              toast({
+                title: "Error!",
+                description: "Error deleting",
+              })
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          toast({
+            title: "Error!",
+            description: "Error deleting",
+          })
+        } 
+      }
+
     if (isLoading) {
         return <Loader/>
     }
     if (error) return <div>Error retrieving. Please refresh and try again </div>;
-
+    
     return (
         <main className="w-full md:w-3/4 ">
         <h2 className="text-2xl font-semibold mb-2">Notes Request</h2>
@@ -73,6 +99,7 @@ const Request = () => {
                     <TableHead> User Id </TableHead>
                     <TableHead>Email </TableHead> */}
                     <TableHead>Category Code</TableHead>
+                    <TableHead>Actions</TableHead>
 
                 </TableRow>
                 </TableHeader>
@@ -93,7 +120,11 @@ const Request = () => {
                     </TableCell>
                     <TableCell>${order.email}</TableCell> */}
                     <TableCell>{order.tag}</TableCell>
-            
+                    <TableCell>
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold`} onClick={() => deleteRequestHandler(order._id)}>
+                        Delete
+                        </span>
+                        </TableCell>
                     </TableRow>
                 ))}
                 </TableBody>

@@ -20,3 +20,12 @@ export const getAllUserRequest = async () => {
         throw error
     }
 }
+
+export const deleteRequest = async (id: string) => {
+    try {
+        const data = await AxiosInstance.delete(`/requests/${id}`)
+        return data
+    } catch (error) {
+        throw error
+    }
+}
