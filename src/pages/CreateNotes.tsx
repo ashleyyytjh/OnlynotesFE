@@ -60,7 +60,7 @@ export default function CreateNotesListing() {
     // Append form values to the FormData object
     formData.append("title", values.title);
     formData.append("description", values.description);
-    formData.append("price", values.price.toString());  // Convert number to string
+    formData.append("price", (values.price * 100).toString());  // Convert number to string
     formData.append("categoryCode", values.categoryCode);
     formData.append("file", values.pdfFile);  // Append the file
     console.log('data is ' , formData.get('file'))
@@ -214,7 +214,7 @@ export default function CreateNotesListing() {
                   />
                 </FormControl>
                 <FormDescription>
-                  Set the price for your notes in SGD.
+                  Set the price for your notes in SGD $.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
