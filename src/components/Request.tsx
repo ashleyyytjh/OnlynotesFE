@@ -65,9 +65,9 @@ const Request = () => {
             <Table>
                 <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[300px]">Id</TableHead>
-                    <TableHead> Status </TableHead>
-                    <TableHead>Price</TableHead>
+                    {/* <TableHead className="w-[300px]">Id</TableHead>
+                    <TableHead> User Id </TableHead>
+                    <TableHead>Email </TableHead> */}
                     <TableHead>Category Code</TableHead>
 
                 </TableRow>
@@ -75,20 +75,20 @@ const Request = () => {
                 <TableBody>
                 {data.map((order : any, index : number) => (
                     <TableRow key={order._id} className={`${index % 2 === 0 ? '' : ''} cursor-pointer`} >
-                    <TableCell className="font-medium">
+                    {/* <TableCell className="font-medium">
                         <div className="flex items-center space-x-4">
-                        <div onClick={() => navigate(`/note/${order._id}`)}>
-                            {order.id}
-                        </div>
+                            <div onClick={() => navigate(`/note/${order._id}`)}>
+                                {order._id}
+                            </div>
                         </div>
                     </TableCell>
                     <TableCell>
                     <span className={`px-2 py-1 rounded-full text-xs font-semibold`}>
-                        {order.status}
+                        {order.userId}
                         </span>
                     </TableCell>
-                    <TableCell>${convertCentsToDollar(order.price)}</TableCell>
-                    <TableCell>{order.categoryCode}</TableCell>
+                    <TableCell>${order.email}</TableCell> */}
+                    <TableCell>{order.tag}</TableCell>
             
                     </TableRow>
                 ))}
