@@ -30,8 +30,15 @@ const OrderListingTable = () =>{
 
     console.log()
     if (isLoading) return <Loader/>;
-    if (error) return <div>Error retrieving orders. Please refresh and try again </div>;
-
+    // if (error) return <div>Error retrieving orders. Please refresh and try again </div>;
+    if (error) {
+      // Check if it's a 404 error
+      if ((error as any).response?.status === 404) {
+        <div>No orders. </div>;
+      } else {
+        <div>Error retrieving orders. Please refresh and try again </div>;
+      }
+    }
   return (
     <div className='mt-10 pt-5 rounded-2xl shadow'>
       <Table>
