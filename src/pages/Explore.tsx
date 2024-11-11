@@ -85,7 +85,9 @@ const Explore = () => {
     const onClickHandler = (id: string) => {
         navigate(`/note/${id}`)
     }
-
+    const setPageHandler = (page:number) => {
+        setParam('page', page);
+    }
     return (
         <div className="">
             <h1 className="text-3xl font-bold mb-8"> Marketplace</h1>
@@ -236,7 +238,7 @@ const Explore = () => {
                 currentPage={Number(getParam('page'))}
                 totalPages={data.totalPages}
                 maxPagesToShow={4}
-                onPageChange= {()=>{}}
+                onPageChange= {setPageHandler}
                 onPageNext= {setPageNextHandler}
                 onPagePrevious={setPageBeforeHandler}
             ></PaginationMINE>
