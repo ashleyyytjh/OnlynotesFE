@@ -22,7 +22,7 @@ const Request = () => {
     const subscribeNotesHandler = async () => {
         try {
             await subscribeRequest(subjectCode).then((data) => {
-                if (data.status === 200 || data.status === 201) {
+                if (data) {
                     toast({
                       title: "Subscribed!",
                       description: "You have successfully subscribed",
@@ -38,6 +38,10 @@ const Request = () => {
             })
         } catch (error) {
             console.log(error);
+            toast({
+                title: "Error!",
+                description: "Error subscribing",
+              })
         }
     }
     if (isLoading) {
