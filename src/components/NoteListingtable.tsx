@@ -30,12 +30,15 @@ const NoteListingTable = () =>{
           toast({
             title: "Deleted!",
             description: "You have successfully deleted",
+            color: 'green'
           })
           refetch();
         } else {
           toast({
             title: "Error!",
             description: "Error deleting",
+            color: 'red'
+
           })
         }
       })
@@ -44,6 +47,8 @@ const NoteListingTable = () =>{
       toast({
         title: "Error!",
         description: "Error deleting",
+        color: 'red'
+
       })
     } 
   }

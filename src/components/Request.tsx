@@ -26,12 +26,14 @@ const Request = () => {
                     toast({
                       title: "Subscribed!",
                       description: "You have successfully subscribed",
+                      color: 'green'
                     })
                     refetch();
                 } else {
                     toast({
                         title: "Error!",
                         description: "Error subscribing",
+                        color: 'red'
                       })
                 }
                 setSubjectCode('')
@@ -41,6 +43,8 @@ const Request = () => {
             toast({
                 title: "Error!",
                 description: "Error subscribing",
+                color: 'red'
+
               })
         }
     }
