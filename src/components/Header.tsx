@@ -10,7 +10,7 @@ import { User, CircleUserRound } from 'lucide-react'
 const Header = () => {
     const navigate = useNavigate()
 
-    const logOutHandler =() => {
+    const logOutHandler = async () => {
         try {
             await logout()
             window.location.href = import.meta.env.VITE_COGNITO_LOGOUT_URL;  // Redirect to external page
