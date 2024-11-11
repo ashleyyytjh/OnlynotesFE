@@ -51,10 +51,10 @@ const NoteListingTable = () =>{
               <TableCell>
               <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                   order.status === 'Verified' 
-                    ? 'bg-orange-200 text-gray-800' 
-                    : order.status === 'Rejected' 
-                    ? 'bg-red-500 text-white' 
-                    : 'bg-grey-500 text-white' 
+                    ? 'bg-green-500 text-white' 
+                    : order.status === 'Pending' 
+                    ? 'bg-grey-500 text-white' 
+                    : 'bg-red-500 text-white' 
                 }`}>
                   {order.status}
                 </span>
