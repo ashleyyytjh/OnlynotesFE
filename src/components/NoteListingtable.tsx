@@ -4,12 +4,13 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 import { Notes } from '@/types/types'
 import EconIcon from '../assets/econs.png'
 import { useNavigate } from 'react-router-dom'
-import { getNotesFromAccountId } from '@/services/NotesService'
+import { deleteNotes, getNotesFromAccountId } from '@/services/NotesService'
 import { useQuery } from '@tanstack/react-query'
 import { convertCentsToDollar } from '@/util/util'
 import Loader from './Loader'
 import PaginationMINE from './Pagination'
 import useSearchParamsHandler from '@/hooks/useSearchParamsHandler'
+import { toast } from '@/hooks/use-toast'
 
 const NoteListingTable = () =>{
     const {getParam,setParam} = useSearchParamsHandler({page:'1'})
@@ -20,6 +21,29 @@ const NoteListingTable = () =>{
     })
   if (isLoading) {
     return <Loader></Loader>
+  }
+  const deleteNoteHandler = async (id: string) => {
+    try {
+      await deleteNotes(id).then((data) => {
+        if (data) {
+          toast({
+            title: "Deleted!",
+            description: "You have successfully deleted",
+          })
+        } else {
+          toast({
+            title: "Error!",
+            description: "Error deleting",
+          })
+        }
+      })
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error!",
+        description: "Error deleting",
+      })
+    }
   }
   console.log(data);
   return (
@@ -32,6 +56,8 @@ const NoteListingTable = () =>{
             <TableHead>ID</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Description</TableHead>
+            <TableHead>Actions</TableHead>
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,6 +93,12 @@ const NoteListingTable = () =>{
               <TableCell className="">{order._id}</TableCell>
               <TableCell>${convertCentsToDollar(order.price)}</TableCell>
               <TableCell>{order.description}</TableCell>
+              <TableCell>
+              <span className={`px-2 py-1 rounded-full text-xs font-semibold`} onClick={() => deleteNoteHandler(order._id)}>
+                  Delete
+                </span>
+                </TableCell>
+
 
      
             </TableRow>

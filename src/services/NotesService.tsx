@@ -10,6 +10,14 @@ export const getAllVerifiedNotes = async (page: string, limit: string) => {
         throw error
     }
 } 
+export const deleteNotes = async (id : string) => {
+    try {
+        const data = await AxiosInstance.delete(`/notes/${id}`);
+        return data.data;
+    } catch (error) {
+        throw error
+    }
+} 
 
 export const createNotes = async (notes: FormData) => {
     try {
