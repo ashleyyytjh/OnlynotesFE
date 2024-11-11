@@ -50,7 +50,7 @@ const NoteListingTable = () =>{
               </TableCell>
               <TableCell>
                 <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                  order.status === 'Verified' ? 'bg-gray-200 text-gray-800' : 'bg-orange-500 text-white'
+                  order.status === 'Verified' ? 'bg-orange-200 text-gray-800' : order.status==='Rejected' ? 'bg-red-500 text-white' : 'bg-grey-500 text-white' 
                 }`}>
                   {order.status}
                 </span>
