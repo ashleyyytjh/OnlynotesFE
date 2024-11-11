@@ -10,7 +10,7 @@ import {StripePaymentElementOptions} from "@stripe/stripe-js";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import EconIcon from '../assets/econs.png'
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getNotesById } from "@/services/NotesService";
 import Loader from "./Loader";
@@ -24,6 +24,7 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
 
     const [search]= useSearchParams();
     const itemId = search.get('id');
+    const navigate = useNavigate();
     console.log(itemId)
     const {data, isLoading, error} = useQuery({
         queryKey: ['noteItem'],
@@ -82,6 +83,7 @@ const CheckoutForm: React.FC<Props> = (props: Props) => {
         });
         if (error) {
             setMessage(error.message || "An unexpected error occurred.");
+            navigate('/unsuccessful-payment');
         }
         setIsStripeLoading(false);
     };

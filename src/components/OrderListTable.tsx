@@ -49,9 +49,16 @@ const OrderListingTable = () =>{
               <TableCell className="">{order._id}</TableCell>
               <TableCell className="">{order.noteId}</TableCell>
               <TableCell>
-                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                  order.orderStatus !== 'successful' ? 'bg-gray-200 text-gray-800' : 'bg-orange-500 text-white'
-                }`}>
+                <span   
+                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                  order.orderStatus === 'successful'
+                    ? 'bg-green-500 text-white'
+                    : order.orderStatus === 'failed'
+                    ? 'bg-red-500 text-white'
+                    : 'bg-gray-500 text-white'
+                  }`}
+              
+                >
                   {order.orderStatus.toLocaleUpperCase()}
                 </span>
               </TableCell>
