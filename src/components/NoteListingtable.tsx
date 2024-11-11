@@ -43,7 +43,12 @@ const NoteListingTable = () =>{
                     <AvatarImage src={order.avatar} alt={order.product} />
                     <AvatarFallback>{order.product[0]}</AvatarFallback>
                   </Avatar> */}
-                  <div onClick={() => navigate(`/note/${order._id}`)}>
+                  <div onClick={() => {
+                    if (order.status === 'Verified') {
+                      navigate(`/note/${order._id}`)
+                    }
+                  }
+                    } className={`${order.status === 'Verified' ? 'underline' : ' '}`}>
                     {order.title}
                   </div>
                 </div>
