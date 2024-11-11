@@ -123,7 +123,7 @@ const NoteItem = () => {
                 </div>
             </div>
 
-            <div className="mt-12">
+            {/* <div className="mt-12">
                 <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
                 <div className="grid gap-4">
                     {reviews.map((review) => (
@@ -194,7 +194,7 @@ const NoteItem = () => {
                         <Button>Submit Review</Button>
                     </CardFooter>
                 </Card>
-            </div>
+            </div> */}
         </div>
     )
 }
