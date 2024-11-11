@@ -17,9 +17,7 @@ const Request = () => {
         queryFn: () => getAllUserRequest()
     })
 
-    if (isLoading) {
-        return <Loader/>
-    }
+ 
     const [subjectCode, setSubjectCode] = useState<string>('');
     const subscribeNotesHandler = async () => {
         try {
@@ -42,6 +40,11 @@ const Request = () => {
             console.log(error);
         }
     }
+    if (isLoading) {
+        return <Loader/>
+    }
+    if (error) return <div>Error retrieving orders. Please refresh and try again </div>;
+
     return (
         <main className="w-full md:w-3/4 ">
         <h2 className="text-2xl font-semibold mb-2">Notes Request</h2>
