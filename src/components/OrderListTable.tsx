@@ -10,31 +10,28 @@ import { useEffect, useState } from "react";
 import { getSession } from "@/services/UserService";
 
 const OrderListingTable = () =>{
-  useEffect(() => {
-    getSession().then((data) => {
-        setId(data.id)
-    })
-}, [])
-    const navigate =  useNavigate();
-
-    const userId = 1
+  const [id, setId] = useState<number>()
+    useEffect(() => {
+        getSession().then((data) => {
+            setId(data.id)
+        })
+    }, [])
      
     const { data: orders, error, isLoading } = useQuery<Order[], Error>({
-        queryKey: ['orders', userId],
+        queryKey: ['orders'],
         queryFn: () => getOrders(id),
+        enabled : id !== undefined
     })
 
-    const [id, setId] = useState<number>()
 
  
 
-    console.log()
     if (isLoading) return <Loader/>;
     // if (error) return <div>Error retrieving orders. Please refresh and try again </div>;
     if (error) {
       // Check if it's a 404 error
       if ((error as any).response?.status === 404) {
-        <div>No orders. </div>;
+        <div> No orders. </div>;
       } else {
         <div>Error retrieving orders. Please refresh and try again </div>;
       }
