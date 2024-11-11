@@ -10,7 +10,8 @@ import { useEffect, useState } from "react";
 import { getSession } from "@/services/UserService";
 
 const OrderListingTable = () =>{
-  const [id, setId] = useState<number>()
+  const [id, setId] = useState<number>();
+
     useEffect(() => {
         getSession().then((data) => {
             setId(data.id)
@@ -48,7 +49,7 @@ const OrderListingTable = () =>{
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders!.map((order, index) => (
+          {orders?.map((order, index) => (
             <TableRow key={order._id} className={`${index % 2 === 0 ? '' : ''} cursor-pointer`} >
               <TableCell className="">{order._id}</TableCell>
               <TableCell className="">{order.noteId}</TableCell>
