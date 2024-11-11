@@ -15,13 +15,14 @@ import { toast } from '@/hooks/use-toast'
 const NoteListingTable = () =>{
     const {getParam,setParam} = useSearchParamsHandler({page:'1'})
     const navigate =  useNavigate();
-    const {data, isLoading,error} = useQuery({
+    const {data, isLoading,error, refetch } = useQuery({
         queryKey:['accNotes'],
         queryFn: () => getNotesFromAccountId()
     })
   if (isLoading) {
     return <Loader></Loader>
   }
+  if (error) return <div>Error retrieving. Please refresh and try again </div>;
   const deleteNoteHandler = async (id: string) => {
     try {
       await deleteNotes(id).then((data) => {
@@ -30,6 +31,7 @@ const NoteListingTable = () =>{
             title: "Deleted!",
             description: "You have successfully deleted",
           })
+          refetch();
         } else {
           toast({
             title: "Error!",
@@ -43,7 +45,7 @@ const NoteListingTable = () =>{
         title: "Error!",
         description: "Error deleting",
       })
-    }
+    } 
   }
   console.log(data);
   return (

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const Request = () => {
     const navigate = useNavigate();
-    const {data, isLoading, error} =  useQuery({
+    const {data, isLoading, error, refetch} =  useQuery({
         queryKey: ['requests'],
         queryFn: () => getAllUserRequest()
     })
@@ -27,13 +27,13 @@ const Request = () => {
                       title: "Subscribed!",
                       description: "You have successfully subscribed",
                     })
+                    refetch();
                 } else {
                     toast({
                         title: "Error!",
                         description: "Error subscribing",
                       })
                 }
-
                 setSubjectCode('')
             })
         } catch (error) {
@@ -47,7 +47,7 @@ const Request = () => {
     if (isLoading) {
         return <Loader/>
     }
-    if (error) return <div>Error retrieving orders. Please refresh and try again </div>;
+    if (error) return <div>Error retrieving. Please refresh and try again </div>;
 
     return (
         <main className="w-full md:w-3/4 ">
