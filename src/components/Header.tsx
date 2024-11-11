@@ -12,7 +12,7 @@ const Header = () => {
 
     const logOutHandler =() => {
         try {
-            logout()
+            await logout()
             window.location.href = import.meta.env.VITE_COGNITO_LOGOUT_URL;  // Redirect to external page
         } catch (error) {
             throw error;
