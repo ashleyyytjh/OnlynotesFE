@@ -11,6 +11,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Profile from '@/components/Profile.tsx'
 import ProductList from '@/components/ProductList.tsx'
 import OrderListingTable from '@/components/OrderListTable.tsx'
+import Request from '@/components/Request.tsx'
 
 const AccountSettings = () => {
     const location = useLocation();
@@ -22,6 +23,8 @@ const AccountSettings = () => {
             return <ProductList/>
         } else if (list === "orders") {
             return <OrderListingTable/>
+        } else if (list === "requests") {
+           return <Request/>
         } else {
             return <>Select a section to view.</>; 
         }
@@ -29,7 +32,8 @@ const AccountSettings = () => {
     const navItems : string[] = [
         "Profile",
         "Product Listing",
-        "Orders"
+        "Orders",
+        "Requests"
     ]
     const navigate = useNavigate();
     const changeSectionHandler = async (name:string) => {

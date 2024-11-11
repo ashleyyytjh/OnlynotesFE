@@ -121,7 +121,7 @@ const Explore = () => {
                         </SelectContent>
                     </Select>
 
-                    <DropdownMenu>
+                    {/* <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" className="w-[180px]">
                                 <Filter className="mr-2 h-4 w-4" />
@@ -182,7 +182,7 @@ const Explore = () => {
                                 Economics
                             </DropdownMenuItem>
                         </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu> */}
                 </div>
             </div>
 

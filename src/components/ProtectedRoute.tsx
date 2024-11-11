@@ -10,20 +10,20 @@ const ProtectedRoute = () => {
     const [loading, setLoading] = useState(true); // Add loading state
     const dispatch = useDispatch();
     const [auth, setAuth] = useState<boolean>(true);
-    useEffect( () => {
-        const fetchData = async () => {
-            const authValue = Cookies.get('auth');
-            if (authValue !== `true`) {
-                setAuth(false)
-            }
-        }
-        fetchData();
-        setLoading(false);
-    },[])
+    // useEffect( () => {
+    //     const fetchData = async () => {
+    //         const authValue = Cookies.get('auth');
+    //         if (authValue !== `true`) {
+    //             setAuth(false)
+    //         }
+    //     }
+    //     fetchData();
+    //     setLoading(false);
+    // },[])
 
-    if (loading) {
-        return <Loader/>
-    }
+    // if (loading) {
+    //     return <Loader/>
+    // }
 
  
     return auth ? <Outlet/> : <Navigate to="/login" replace />
