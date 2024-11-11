@@ -53,7 +53,7 @@ const NoteListingTable = () =>{
                   order.status === 'Verified' 
                     ? 'bg-green-500 text-white' 
                     : order.status === 'Pending' 
-                    ? 'bg-grey-500 text-white' 
+                    ? 'bg-gray-500 text-white' 
                     : 'bg-red-500 text-white' 
                 }`}>
                   {order.status}
