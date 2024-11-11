@@ -75,22 +75,22 @@ const OrderListingTable = () =>{
       </Table>
 
       <div className="flex items-center justify-end space-x-2 py-4">
-      <Pagination>
-            <PaginationContent>
-                <PaginationItem>
-                    <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationNext href="#product-listing" />
-                </PaginationItem>
-            </PaginationContent>
-        </Pagination>
+        {/* <Pagination>
+              <PaginationContent>
+                  <PaginationItem>
+                      <PaginationPrevious href="#" />
+                  </PaginationItem>
+                  <PaginationItem>
+                      <PaginationLink href="#">1</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                      <PaginationEllipsis />
+                  </PaginationItem>
+                  <PaginationItem>
+                      <PaginationNext href="#product-listing" />
+                  </PaginationItem>
+              </PaginationContent>
+          </Pagination> */}
       </div>
     </div>
   )
