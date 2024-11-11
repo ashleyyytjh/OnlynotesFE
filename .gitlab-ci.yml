@@ -28,7 +28,7 @@ stage:
   - git fetch --all
   - echo "$GITLAB_TOKEN"
   - git checkout staging
-  - git merge origin/main
+  - git merge origin/main --allow-unrelated-histories
   - git push "https://CD-staging:${GITLAB_TOKEN}@gitlab.com//${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git" staging
   only:
     - main
