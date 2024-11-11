@@ -111,7 +111,7 @@ const NoteItem = () => {
                             <ShoppingCart className="mr-2 h-4 w-4" /> Purchase
                         </Button>
                     </div>
-                    <div className="border-t pt-4">
+                    {/* <div className="border-t pt-4">
                         <h2 className="text-lg font-semibold mb-2">Details</h2>
                         <ul className="list-disc list-inside space-y-1 text-sm">
                             <li>50 pages of detailed notes</li>
@@ -119,7 +119,7 @@ const NoteItem = () => {
                             <li>Digital PDF format</li>
                             <li>Last updated: May 2023</li>
                         </ul>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
