@@ -73,7 +73,7 @@ const Request = () => {
                 </TableRow>
                 </TableHeader>
                 <TableBody>
-                {data.response.map((order : any, index : number) => (
+                {data.map((order : any, index : number) => (
                     <TableRow key={order._id} className={`${index % 2 === 0 ? '' : ''} cursor-pointer`} >
                     <TableCell className="font-medium">
                         <div className="flex items-center space-x-4">
