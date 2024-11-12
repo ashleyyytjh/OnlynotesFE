@@ -41,7 +41,7 @@ const AccountSettings = () => {
     }
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-2">Settings</h1>
+            <h1 className="text-3xl font-bold mb-2">I love Settings</h1>
             <p className="text-gray-600 mb-8">
                 Manage your account settings and set e-mail preferences.
             </p>
